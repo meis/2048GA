@@ -1,11 +1,6 @@
 package Game2048::State;
 use v5.10;
 use strict;
-use Moo;
-
-has board => ( is => 'ro', required => 1 );
-has score => ( is => 'ro', default => 0 );
-has moves => ( is => 'lazy' );
 
 use constant ROTATION => {
     left  => [ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 ],
@@ -13,6 +8,28 @@ use constant ROTATION => {
     up    => [ 0,4,8,12,1,5,9,13,2,6,10,14,3,7,11,15 ],
     down  => [ 12,8,4,0,13,9,5,1,14,10,6,2,15,11,7,3 ],
 };
+
+sub new {
+    my ( $self, $args ) = @_;
+
+    my $state = bless $args, $self;
+
+    $state->{score} ||= 0;
+
+    $state;
+}
+
+sub board { shift->{board} }
+sub score { shift->{score} }
+sub moves {
+    my $self = shift;
+
+    if (!$self->{moves}) {
+        $self->{moves} = $self->_build_moves;
+    }
+
+    $self->{moves};
+}
 
 sub available_moves {
     my $self = shift;
