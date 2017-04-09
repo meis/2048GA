@@ -53,9 +53,11 @@ sub _build_moves {
 sub _equals {
     my ( $self, $other ) = @_;
 
-    !grep {
-        $self->board->[$_] != $other->board->[$_]
-    } 0..15;
+    for (0..15) {
+        return 0 if $self->board->[$_] != $other->board->[$_];
+    }
+
+    return 1;
 }
 
 sub _shift_row {
