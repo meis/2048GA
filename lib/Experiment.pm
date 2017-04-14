@@ -3,7 +3,7 @@ use v5.10;
 use strict;
 use Moo;
 
-use AI::Genetic::Pro;
+use AI::Genetic::Pro::Parallel;
 use Minion::Chromosome;
 
 has generations => (is => 'ro', default => 100);
@@ -17,10 +17,10 @@ sub run {
         -type            => 'bitvector',      # type of chromosomes
         -population      => $self->population,             # population
         -crossover       => 0.9,              # probab. of crossover
-        -mutation        => 0.05,             # probab. of mutation
+        -mutation        => 0.1,             # probab. of mutation
         -parents         => 2,                # number  of parents
         -selection       => [ 'Roulette' ],   # selection strategy
-        -strategy        => [ 'Points', 2 ],  # crossover strategy
+        -strategy        => [ 'Points', 3 ],  # crossover strategy
         -cache           => 1,                # cache results
         -history         => 1,                # remember best results
         -preserve        => 3,                # remember the bests

@@ -390,6 +390,20 @@ DISTRIBUTIONS
       Sub::Defer 2.003001
       Sub::Quote 2.003001
       perl 5.006
+  Parallel-ForkManager-1.19
+    pathname: Y/YA/YANICK/Parallel-ForkManager-1.19.tar.gz
+    provides:
+      Parallel::ForkManager 1.19
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 0
+      File::Path 0
+      File::Spec 0
+      File::Temp 0
+      POSIX 0
+      Storable 0
+      perl 5.006
+      strict 0
   Role-Tiny-2.000005
     pathname: H/HA/HAARG/Role-Tiny-2.000005.tar.gz
     provides:
