@@ -80,8 +80,9 @@ sub evaluate {
     ];
 
     for my $position (0..15) {
+        my $position_weight = 1 + 0.1 * ($position + 1) * $weights->{position};
         $calcs->{tile_evaluations}[$position] =
-            $calcs->{tiles_by_value}->[$position] * ($position + 1) * $weights->{position};
+            $calcs->{tiles_by_value}->[$position] * $position_weight;
     }
 
     my $evaluation = sum(@{$calcs->{tile_evaluations}})

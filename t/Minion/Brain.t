@@ -46,7 +46,7 @@ subtest 'evaluate board' => sub {
         })
     );
 
-    is($evaluation, 5664 + 800 + 14 );
+    is($evaluation, 824.4 + 800 + 14 );
 
     subtest 'score' => sub {
         is($calcs->{score}, 800);
@@ -105,22 +105,22 @@ subtest 'evaluate board' => sub {
 
     subtest 'tile_evatuations' => sub {
         my $expected_evaluation = [
-             6 *  1 * 2,
-             6 *  2 * 2,
-             8 *  3 * 2,
-            10 *  4 * 2,
-            10 *  5 * 2,
-            10 *  6 * 2,
-            12 *  7 * 2,
-            14 *  8 * 2,
-            14 *  9 * 2,
-            16 * 10 * 2,
-            16 * 11 * 2,
-            18 * 12 * 2,
-            18 * 13 * 2,
-            22 * 14 * 2,
-            24 * 15 * 2,
-            54 * 16 * 2,
+             6 * 1.2,
+             6 * 1.4,
+             8 * 1.6,
+            10 * 1.8,
+            10 * 2,
+            10 * 2.2,
+            12 * 2.4,
+            14 * 2.6,
+            14 * 2.8,
+            16 * 3,
+            16 * 3.2,
+            18 * 3.4,
+            18 * 3.6,
+            22 * 3.8,
+            24 * 4,
+            54 * 4.2,
         ];
 
         is_deeply($calcs->{tile_evaluations}, $expected_evaluation);
