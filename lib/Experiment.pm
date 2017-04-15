@@ -12,7 +12,7 @@ has population  => (is => 'ro', default => 50);
 sub run {
     my $self = shift;
 
-    my $ga = AI::Genetic::Pro->new(
+    my $ga = AI::Genetic::Pro::Parallel->new(
         -fitness         => \&_fitness,        # fitness function
         -type            => 'bitvector',      # type of chromosomes
         -population      => $self->population,             # population
