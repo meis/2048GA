@@ -4,16 +4,20 @@ use strict;
 use Moo;
 
 use AI::Genetic::Pro;
-use Minion::Chromosome;
 
 has generations => (is => 'ro', default => 100);
 has population  => (is => 'ro', default => 50);
+
+has fitness_class => (is => 'ro', default => 'Fitness::Base');
+has chromosome_class => (is => 'ro', default => 'Minion::Chromosome');
+has fitness_function => (is => 'lazy');
+has play => (is => 'ro', default => 10);
 
 sub run {
     my $self = shift;
 
     my $ga = AI::Genetic::Pro->new(
-        -fitness         => \&_fitness,        # fitness function
+        -fitness         => $self->fitness_function,        # fitness function
         -type            => 'bitvector',      # type of chromosomes
         -population      => $self->population,             # population
         -crossover       => 0.9,              # probab. of crossover
@@ -48,10 +52,18 @@ sub print_current_state {
     say "---------------------------------";
 }
 
-sub _fitness {
-    my ($ga, $bits) = @_;
+sub _build_fitness_function {
+    my $self = shift;
 
-    Minion::Chromosome->new({ bits => $bits })->build_individual->play(100);
+    eval("use " . $self->fitness_class);
+    eval("use " . $self->chromosome_class);
+
+    my $fitness = $self->fitness_class->new({
+        play => $self->play,
+        chromosome_class => $self->chromosome_class,
+    });
+
+    return sub { $fitness->run(@_) }
 }
 
 1;
