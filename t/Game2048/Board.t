@@ -2,12 +2,74 @@
 use v5.10;
 use strict;
 use Test::More;
-use Game2048::State;
+use List::Util qw/sum/;
+
+use Game2048::Board;
+
+subtest 'new board' => sub {
+    my $board = Game2048::Board->new();
+    my @tiles = @{$board->tiles};
+
+    my $empty_tiles = grep { $_ eq 0 } @tiles;
+    my $total_tiles = sum @tiles;
+
+    is($empty_tiles, 14);
+    ok($total_tiles eq 2 or $total_tiles eq 3);
+};
+
+subtest 'finished' => sub {
+    my $non_finished_board = Game2048::Board->new({
+        tiles => [qw/
+            1 1 1 1
+            2 1 1 1
+            2 2 1 2
+            1 2 1 2
+        /],
+    });
+
+    my $finished_board = Game2048::Board->new({
+        tiles => [qw/
+            2 1 2 1
+            1 2 1 2
+            2 1 2 1
+            1 2 1 2
+        /],
+    });
+
+    ok(!$non_finished_board->finished());
+    ok($finished_board->finished());
+};
+
+subtest 'move' => sub {
+    my $board = Game2048::Board->new({
+        tiles => [qw/
+            0 0 0 0
+            2 0 3 0
+            2 0 3 0
+            1 0 0 0
+        /],
+    });
+
+    my $expected_tiles = [qw/
+        0 0 0 0
+        0 0 0 0
+        3 0 0 0
+        1 0 4 0
+    /];
+
+    $board = $board->move('down');
+
+    my $empty_tiles = grep { $_ eq 0 } @{$board->tiles};
+    my $total_tiles = sum @{$board->tiles};
+
+    is($empty_tiles, 12);
+    ok($total_tiles eq 9 or $total_tiles eq 10);
+};
 
 subtest 'next moves' => sub {
     my @cases = (
         {
-            board => [qw/
+            tiles => [qw/
                 0 0 0 0
                 0 1 0 1
                 0 2 0 2
@@ -16,7 +78,7 @@ subtest 'next moves' => sub {
             score => 0,
             moves => {
                 left => {
-                    board => [qw/
+                    tiles => [qw/
                         0 0 0 0
                         2 0 0 0
                         3 0 0 0
@@ -25,7 +87,7 @@ subtest 'next moves' => sub {
                     score => 12,
                 },
                 right => {
-                    board => [qw/
+                    tiles => [qw/
                         0 0 0 0
                         0 0 0 2
                         0 0 0 3
@@ -34,7 +96,7 @@ subtest 'next moves' => sub {
                     score => 12,
                 },
                 up => {
-                    board => [qw/
+                    tiles => [qw/
                         1 1 1 1
                         0 3 0 3
                         0 0 0 0
@@ -43,7 +105,7 @@ subtest 'next moves' => sub {
                     score => 16,
                 },
                 down => {
-                    board => [qw/
+                    tiles => [qw/
                         0 0 0 0
                         0 0 0 0
                         0 1 0 1
@@ -54,7 +116,7 @@ subtest 'next moves' => sub {
             },
         },
         {
-            board => [qw/
+            tiles => [qw/
                 3 2 1 2
                 3 0 0 0
                 3 0 0 0
@@ -63,7 +125,7 @@ subtest 'next moves' => sub {
             score => 2000,
             moves => {
                 right => {
-                    board => [qw/
+                    tiles => [qw/
                         3 2 1 2
                         0 0 0 3
                         0 0 0 3
@@ -72,7 +134,7 @@ subtest 'next moves' => sub {
                     score => 2000,
                 },
                 up => {
-                    board => [qw/
+                    tiles => [qw/
                         4 2 1 2
                         4 0 0 0
                         0 0 0 0
@@ -81,7 +143,7 @@ subtest 'next moves' => sub {
                     score => 2032,
                 },
                 down => {
-                    board => [qw/
+                    tiles => [qw/
                         0 0 0 0
                         0 0 0 0
                         4 0 0 0
@@ -100,11 +162,11 @@ subtest 'next moves' => sub {
         subtest "board $n" => sub {
             my $state;
             my $args = {
-                board => $case->{board},
+                tiles => $case->{tiles},
                 score => $case->{score},
             };
 
-            ok($state = Game2048::State->new($args));
+            ok($state = Game2048::Board->new($args));
 
             my @available_moves = keys %{$case->{moves}};
             is($state->available_moves, @available_moves);
@@ -113,7 +175,7 @@ subtest 'next moves' => sub {
                 subtest "moving $direction" => sub {
                     my $move = $state->moves->{$direction};
                     my $expected = $case->{moves}{$direction};
-                    is_deeply($move->board, $expected->{board});
+                    is_deeply($move->tiles, $expected->{tiles});
                     is($move->score, $expected->{score});
                 };
             }

@@ -1,6 +1,7 @@
-package Game2048::State;
+package Game2048::Board;
 use v5.10;
 use strict;
+use warnings;
 
 use constant ROTATION => {
     left  => [ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 ],
@@ -10,16 +11,49 @@ use constant ROTATION => {
 };
 
 sub new {
-    my ( $self, $args ) = @_;
+    my ($self, $args) = @_;
 
-    my $state = bless $args, $self;
+    $args ||= {};
+    my $board = bless $args, $self;
 
-    $state->{score} ||= 0;
+    unless ($board->{tiles}) {
+        $board->{tiles} = [qw/
+            0 0 0 0
+            0 0 0 0
+            0 0 0 0
+            0 0 0 0
+        /];
 
-    $state;
+        $board->_add_random_tile($board);
+        $board->_add_random_tile($board);
+    }
+
+    $board->{score} ||= 0;
+
+    return $board;
 }
 
-sub board { shift->{board} }
+sub finished {
+    my $self = shift;
+
+    return (0 == $self->available_moves);
+}
+
+sub move {
+    my ($self, $direction) = @_;
+
+    die "Game ended" if $self->finished;
+
+    my @moves = $self->available_moves;
+    die "Not allowed" unless grep { $direction eq $_ } @moves;
+
+    my $new_board = $self->moves->{$direction};
+    $new_board->_add_random_tile();
+
+    return $new_board;
+}
+
+sub tiles { shift->{tiles} }
 sub score { shift->{score} }
 sub moves {
     my $self = shift;
@@ -37,12 +71,25 @@ sub available_moves {
     keys %{ $self->moves };
 }
 
+sub _add_random_tile {
+    my $self = shift;
+
+    my $tiles = $self->{tiles};
+
+    my @free_cells = grep { !$tiles->[$_] } 0..@$tiles -1;
+    # 90% of values are "2", 10% are "4"
+    my $tile_value = int(1.1 + rand(1));
+    my $random_position = @free_cells[rand @free_cells];
+
+    $tiles->[$random_position] = $tile_value;
+}
+
 sub _build_moves {
     my $self = shift;
     my $moves = {};
 
     for my $direction (keys %{(ROTATION)}) {
-        my $state = $self->_move_board($direction);
+        my $state = $self->_move_tiles($direction);
         $moves->{$direction} = $state
             unless $self->_equals($state);
     }
@@ -54,7 +101,7 @@ sub _equals {
     my ( $self, $other ) = @_;
 
     for (0..15) {
-        return 0 if $self->board->[$_] != $other->board->[$_];
+        return 0 if $self->tiles->[$_] != $other->tiles->[$_];
     }
 
     return 1;
@@ -87,11 +134,11 @@ sub _shift_row {
     return @tiles, $score;
 }
 
-sub _move_board {
+sub _move_tiles {
     my ( $self, $direction ) = @_;
 
     my $new;
-    my @board = @{$self->board};
+    my @tiles = @{$self->tiles};
     my $score = $self->score;
 
     my $idx = 0;
@@ -110,17 +157,17 @@ sub _move_board {
             $new->[$r[3]],
             my $added_score,
         ) = $self->_shift_row(
-            $board[$r[0]],
-            $board[$r[1]],
-            $board[$r[2]],
-            $board[$r[3]]
+            $tiles[$r[0]],
+            $tiles[$r[1]],
+            $tiles[$r[2]],
+            $tiles[$r[3]]
         );
 
         $score += $added_score;
     }
 
     return __PACKAGE__->new({
-        board => $new,
+        tiles => $new,
         score => $score
     });
 }

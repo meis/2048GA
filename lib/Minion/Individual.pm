@@ -2,7 +2,7 @@ package Minion::Individual;
 use v5.10;
 use strict;
 use Moo;
-use Game2048::Engine;
+use Game2048::Board;
 use Minion::Brain;
 use Minion::Chromosome;
 
@@ -17,13 +17,13 @@ sub play {
     my $total_score = 0;
 
     for (0..$times -1) {
-        my $game = Game2048::Engine->new;
+        my $board = Game2048::Board->new;
 
-        while (!$game->finished) {
-            $game->move($self->brain->decide($game->state));
+        while (!$board->finished) {
+            $board = $board->move($self->brain->decide($board));
         }
 
-        $total_score += $game->state->score;
+        $total_score += $board->score;
     }
 
     return $total_score / $times;

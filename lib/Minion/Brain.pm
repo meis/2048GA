@@ -30,32 +30,32 @@ use constant ADJACENT => {
 };
 
 sub evaluate {
-    my ($self, $state) = @_;
+    my ($self, $board) = @_;
 
-    my $board = $state->board;
-    my $score = $state->score;
+    my $tiles = $board->tiles;
+    my $score = $board->score;
+
     my $weights = $self->chromosome->weights;
-
     my $calcs = {};
 
     $calcs->{score} = $score * $weights->{score};
-    $calcs->{empty_tiles} =  (grep { $_ == 0 } @{$board}) * $weights->{empty_tiles};
+    $calcs->{empty_tiles} =  (grep { $_ == 0 } @{$tiles}) * $weights->{empty_tiles};
 
     for my $tile (0..15) {
-        my $value = $board->[$tile];
+        my $value = $tiles->[$tile];
         my $neighbours = ADJACENT->{$tile};
         my @distances =
             sort
             map { abs($value - $_) }
             # Skip empty tiles
             grep { $_ }
-            map { $board->[$_] }
+            map { $tiles->[$_] }
             @$neighbours;
 
         $calcs->{tile_value}[$tile] = $value ? (2 ** $value) * $weights->{tile_value} : 0;
         $calcs->{tile_neighbours}[$tile] = @$neighbours * $weights->{tile_neighbours};
         $calcs->{tile_empty_neighbours}[$tile] = $weights->{tile_empty_neighbours}
-            * grep { $board->[$_] == 0 } @$neighbours;
+            * grep { $tiles->[$_] == 0 } @$neighbours;
 
         if ($value == 0 || @distances == 0) {
             $calcs->{tile_min_distance}[$tile] = 0;
@@ -93,12 +93,12 @@ sub evaluate {
 }
 
 sub decide {
-    my ($self, $state) = @_;
+    my ($self, $board) = @_;
 
-    my $moves = $state->moves;
+    my $moves = $board->moves;
 
     my %moves = map {
-        $_ => scalar $self->evaluate($state)
+        $_ => scalar $self->evaluate($board)
     } keys %$moves;
 
     my @sorted = sort { $moves{$b} <=> $moves{$a} } keys %moves;
