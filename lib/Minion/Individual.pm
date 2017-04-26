@@ -4,9 +4,9 @@ use strict;
 use Moo;
 use Game2048::Board;
 use Minion::Brain;
-use Minion::Chromosome;
+use Chromosome;
 
-has chromosome => (is => 'ro', default => sub { Minion::Chromosome->new } );
+has chromosome => (is => 'ro', default => sub { Chromosome->new } );
 has brain       => (is => 'lazy');
 
 sub _build_brain { Minion::Brain->new({ chromosome => shift->chromosome }) }

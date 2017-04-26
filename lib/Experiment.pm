@@ -7,18 +7,20 @@ use AI::Genetic::Pro;
 
 has generations => (is => 'ro', default => 100);
 has population  => (is => 'ro', default => 50);
-
-has fitness_class => (is => 'ro', default => 'Fitness::Base');
-has chromosome_class => (is => 'ro', default => 'Minion::Chromosome');
+has play        => (is => 'ro', default => 10);
+has fitness_class    => (is => 'ro', default => 'Fitness::Base');
+has chromosome_class => (is => 'ro', default => 'Chromosome::40Bits');
 has fitness_function => (is => 'lazy');
-has play => (is => 'ro', default => 10);
 
 sub run {
     my $self = shift;
 
+    eval("use " . $self->fitness_class);
+    eval("use " . $self->chromosome_class);
+
     my $ga = AI::Genetic::Pro->new(
         -fitness         => $self->fitness_function,        # fitness function
-        -type            => 'bitvector',      # type of chromosomes
+        -type            => $self->chromosome_class->type,      # type of chromosomes
         -population      => $self->population,             # population
         -crossover       => 0.9,              # probab. of crossover
         -mutation        => 0.05,             # probab. of mutation
@@ -30,7 +32,7 @@ sub run {
         -preserve        => 3,                # remember the bests
     );
 
-    $ga->init(40);
+    $ga->init($self->chromosome_class->init);
     $self->print_current_state($ga);
 
     for my $n (0..$self->generations -1 ) {
@@ -38,9 +40,6 @@ sub run {
         $self->print_current_state($ga);
     }
     say "Best score: " . $ga->as_string($ga->chromosomes->[0]);
-
-    # save evolution path as a chart
-    $ga->chart(-filename => 'evolution.png');
 }
 
 sub print_current_state {
@@ -55,15 +54,12 @@ sub print_current_state {
 sub _build_fitness_function {
     my $self = shift;
 
-    eval("use " . $self->fitness_class);
-    eval("use " . $self->chromosome_class);
-
     my $fitness = $self->fitness_class->new({
         play => $self->play,
         chromosome_class => $self->chromosome_class,
     });
 
-    return sub { $fitness->run(@_) }
+    return sub { $fitness->run(@_) };
 }
 
 1;
