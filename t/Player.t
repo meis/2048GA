@@ -3,7 +3,7 @@ use v5.10;
 use strict;
 use Test::More;
 
-use Game2048::Board;
+use Board;
 use Player;
 use Chromosome::40Bits;
 
@@ -35,7 +35,7 @@ subtest 'evaluate board' => sub {
     });
 
     my ($evaluation, $calcs) = $player->evaluate(
-        Game2048::Board->new({
+        Board->new({
             tiles => [qw/
                 0 4 0 0
                 0 1 0 1

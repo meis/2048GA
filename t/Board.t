@@ -4,10 +4,10 @@ use strict;
 use Test::More;
 use List::Util qw/sum/;
 
-use Game2048::Board;
+use Board;
 
 subtest 'new board' => sub {
-    my $board = Game2048::Board->new();
+    my $board = Board->new();
     my @tiles = @{$board->tiles};
 
     my $empty_tiles = grep { $_ eq 0 } @tiles;
@@ -18,7 +18,7 @@ subtest 'new board' => sub {
 };
 
 subtest 'finished' => sub {
-    my $non_finished_board = Game2048::Board->new({
+    my $non_finished_board = Board->new({
         tiles => [qw/
             1 1 1 1
             2 1 1 1
@@ -27,7 +27,7 @@ subtest 'finished' => sub {
         /],
     });
 
-    my $finished_board = Game2048::Board->new({
+    my $finished_board = Board->new({
         tiles => [qw/
             2 1 2 1
             1 2 1 2
@@ -41,7 +41,7 @@ subtest 'finished' => sub {
 };
 
 subtest 'move' => sub {
-    my $board = Game2048::Board->new({
+    my $board = Board->new({
         tiles => [qw/
             0 0 0 0
             2 0 3 0
@@ -166,7 +166,7 @@ subtest 'next moves' => sub {
                 score => $case->{score},
             };
 
-            ok($state = Game2048::Board->new($args));
+            ok($state = Board->new($args));
 
             my @available_moves = keys %{$case->{moves}};
             is($state->available_moves, @available_moves);

@@ -3,7 +3,7 @@ use v5.10;
 use strict;
 use Moo;
 use List::Util qw/sum/;
-use Game2048::Board;
+use Board;
 
 has 'chromosome' => (is => 'ro');
 
@@ -36,7 +36,7 @@ sub play {
     my $total_score = 0;
 
     for (0..$times -1) {
-        my $board = Game2048::Board->new;
+        my $board = Board->new;
 
         while (!$board->finished) {
             $board = $board->move($self->decide($board));

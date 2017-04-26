@@ -1,4 +1,4 @@
-package Game2048::Board;
+package Board;
 use v5.10;
 use strict;
 use warnings;
