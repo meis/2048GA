@@ -2,7 +2,7 @@ package Fitness::Base;
 use v5.10;
 use strict;
 use Moo;
-use Minion::Individual;
+use Player;
 
 has chromosome_class => (is => 'ro', requrired => 1);
 has play             => (is => 'ro', default => 1);
@@ -14,7 +14,7 @@ sub run {
         genes => $genes
     });
 
-    my $player = Minion::Individual->new({ chromosome => $chromosome });
+    my $player = Player->new({ chromosome => $chromosome });
     $player->play($self->play);
 }
 

@@ -1,8 +1,9 @@
-package Minion::Brain;
+package Player;
 use v5.10;
 use strict;
 use Moo;
 use List::Util qw/sum/;
+use Game2048::Board;
 
 has 'chromosome' => (is => 'ro');
 
@@ -28,6 +29,24 @@ use constant ADJACENT => {
     14 => [10, 13, 15],
     15 => [11, 14],
 };
+
+sub play {
+    my $self = shift;
+    my $times = shift || 1;
+    my $total_score = 0;
+
+    for (0..$times -1) {
+        my $board = Game2048::Board->new;
+
+        while (!$board->finished) {
+            $board = $board->move($self->decide($board));
+        }
+
+        $total_score += $board->score;
+    }
+
+    return $total_score / $times;
+}
 
 sub evaluate {
     my ($self, $board) = @_;
