@@ -2,7 +2,7 @@ package Experiment;
 use v5.10;
 use strict;
 use Moo;
-
+use Module::Load;
 use AI::Genetic::Pro;
 
 has generations => (is => 'ro', default => 100);
@@ -15,8 +15,8 @@ has fitness_function => (is => 'lazy');
 sub run {
     my $self = shift;
 
-    eval("use " . $self->fitness_class);
-    eval("use " . $self->chromosome_class);
+    load($self->fitness_class);
+    load($self->chromosome_class);
 
     my $ga = AI::Genetic::Pro->new(
         -fitness         => $self->fitness_function,        # fitness function
