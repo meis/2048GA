@@ -1,6 +1,7 @@
 # -*- mode: perl -*-
 requires 'AI::Genetic';
 requires 'Data::Dumper';
+requires 'Getopt::Long::Descriptive';
 requires 'List::Util';
 requires 'Module::Load';
 requires 'Moo';
