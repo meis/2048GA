@@ -6,6 +6,7 @@ with 'Chromosome';
 
 sub init { 40 }
 sub type { 'bitvector' }
+sub key  { join('', @{shift->genes}) }
 
 sub _build_genes  {[ map {0} 0..39 ]}
 
@@ -23,8 +24,6 @@ sub _build_weights {
         tile_max_distance     => _gene2weight(@{$self->genes}[35..39]),
     }
 }
-
-sub _build_individual { Minion::Individual->new({ chromosome => shift }) }
 
 sub _gene2weight {
     my $weight = $_[0] ? -1 : 1;

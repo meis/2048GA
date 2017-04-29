@@ -34,7 +34,7 @@ sub run {
         genes => [$self->ga->people->[0]->genes],
     });
     say 'Weights of best chromosome:';
-    say Dumper($best_chromosome->weights);
+    say Dumper($best_chromosome->to_string);
 
 }
 
