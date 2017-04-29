@@ -7,6 +7,7 @@ requires 'Module::Load';
 requires 'Moo';
 requires 'Moo::Role';
 requires 'Parallel::ForkManager';
+requires 'Statistics::Basic';
 
 on 'develop' => sub {
     requires 'App::Prove';

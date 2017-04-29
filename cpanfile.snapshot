@@ -259,6 +259,14 @@ DISTRIBUTIONS
       Sub::Defer 2.003001
       Sub::Quote 2.003001
       perl 5.006
+  Number-Format-1.75
+    pathname: W/WR/WRW/Number-Format-1.75.tar.gz
+    provides:
+      Number::Format 1.75
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 0
+      POSIX 0
   Parallel-ForkManager-1.19
     pathname: Y/YA/YANICK/Parallel-ForkManager-1.19.tar.gz
     provides:
@@ -310,6 +318,27 @@ DISTRIBUTIONS
       Role::Tiny::With 2.000005
     requirements:
       Exporter 5.57
+      perl 5.006
+  Statistics-Basic-1.6611
+    pathname: J/JE/JETTERO/Statistics-Basic-1.6611.tar.gz
+    provides:
+      Statistics::Basic 1.6611
+      Statistics::Basic::ComputedVector undef
+      Statistics::Basic::Correlation undef
+      Statistics::Basic::Covariance undef
+      Statistics::Basic::LeastSquareFit undef
+      Statistics::Basic::Mean undef
+      Statistics::Basic::Median undef
+      Statistics::Basic::Mode undef
+      Statistics::Basic::StdDev undef
+      Statistics::Basic::Variance undef
+      Statistics::Basic::Vector undef
+      Statistics::Basic::_OneVectorBase undef
+      Statistics::Basic::_TwoVectorBase undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      Number::Format 1.42
+      Scalar::Util 0
       perl 5.006
   Sub-Exporter-0.987
     pathname: R/RJ/RJBS/Sub-Exporter-0.987.tar.gz
