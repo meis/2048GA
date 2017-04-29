@@ -14,42 +14,6 @@ DISTRIBUTIONS
       AI::Genetic::OpSelection undef
     requirements:
       ExtUtils::MakeMaker 0
-  AI-Genetic-Pro-0.401
-    pathname: S/ST/STRZELEC/AI-Genetic-Pro-0.401.tar.gz
-    provides:
-      AI::Genetic::Pro 0.401
-      AI::Genetic::Pro::Array::Type undef
-      AI::Genetic::Pro::Chromosome undef
-      AI::Genetic::Pro::Crossover::Distribution undef
-      AI::Genetic::Pro::Crossover::OX undef
-      AI::Genetic::Pro::Crossover::PMX undef
-      AI::Genetic::Pro::Crossover::Points undef
-      AI::Genetic::Pro::Crossover::PointsAdvanced undef
-      AI::Genetic::Pro::Crossover::PointsBasic undef
-      AI::Genetic::Pro::Crossover::PointsSimple undef
-      AI::Genetic::Pro::Mutation::Bitvector undef
-      AI::Genetic::Pro::Mutation::Combination undef
-      AI::Genetic::Pro::Mutation::Listvector undef
-      AI::Genetic::Pro::Mutation::Rangevector undef
-      AI::Genetic::Pro::Selection::Distribution undef
-      AI::Genetic::Pro::Selection::Roulette undef
-      AI::Genetic::Pro::Selection::RouletteBasic undef
-      AI::Genetic::Pro::Selection::RouletteDistribution undef
-    requirements:
-      Carp 0
-      Class::Accessor::Fast::XS 0
-      Clone 0
-      Digest::MD5 0
-      Exporter::Lite 0
-      ExtUtils::MakeMaker 0
-      GD::Graph::linespoints 0
-      List::MoreUtils 0
-      List::Util 0
-      Math::Random 0
-      Storable 2.05
-      Struct::Compare 0
-      Tie::Array::Packed 0
-      UNIVERSAL::require 0
   Algorithm-Diff-1.1903
     pathname: T/TY/TYEMQ/Algorithm-Diff-1.1903.tar.gz
     provides:
@@ -69,16 +33,6 @@ DISTRIBUTIONS
       Getopt::Long 2.36
       strict 0
       warnings 0
-  Bit-Vector-7.4
-    pathname: S/ST/STBEY/Bit-Vector-7.4.tar.gz
-    provides:
-      Bit::Vector 7.4
-      Bit::Vector::Overload 7.4
-      Bit::Vector::String 7.4
-    requirements:
-      Carp::Clan 5.3
-      ExtUtils::MakeMaker 0
-      Storable 2.21
   Capture-Tiny-0.46
     pathname: D/DA/DAGOLDEN/Capture-Tiny-0.46.tar.gz
     provides:
@@ -94,29 +48,6 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  Carp-Clan-6.06
-    pathname: K/KE/KENTNL/Carp-Clan-6.06.tar.gz
-    provides:
-      Carp::Clan 6.06
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::Exception 0
-  Class-Accessor-0.34
-    pathname: K/KA/KASEI/Class-Accessor-0.34.tar.gz
-    provides:
-      Class::Accessor 0.34
-      Class::Accessor::Fast 0.34
-      Class::Accessor::Faster 0.34
-    requirements:
-      ExtUtils::MakeMaker 0
-      base 1.01
-  Class-Accessor-Fast-XS-0.04
-    pathname: R/RU/RUZ/Class-Accessor-Fast-XS-0.04.tar.gz
-    provides:
-      Class::Accessor::Fast::XS 0.04
-    requirements:
-      Class::Accessor::Fast 0
-      ExtUtils::MakeMaker 0
   Class-Method-Modifiers-2.12
     pathname: E/ET/ETHER/Class-Method-Modifiers-2.12.tar.gz
     provides:
@@ -130,24 +61,6 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  Class-XSAccessor-1.19
-    pathname: S/SM/SMUELLER/Class-XSAccessor-1.19.tar.gz
-    provides:
-      Class::XSAccessor 1.19
-      Class::XSAccessor::Array 1.19
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0
-      Time::HiRes 0
-      XSLoader 0
-      perl 5.008
-  Clone-0.38
-    pathname: G/GA/GARU/Clone-0.38.tar.gz
-    provides:
-      Clone 0.38
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0
   Cpanel-JSON-XS-3.0231
     pathname: R/RU/RURBAN/Cpanel-JSON-XS-3.0231.tar.gz
     provides:
@@ -155,17 +68,6 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Pod::Text 2.08
-  Data-IEEE754-0.01
-    pathname: D/DR/DROLSKY/Data-IEEE754-0.01.tar.gz
-    provides:
-      Data::IEEE754 0.01
-    requirements:
-      Config 0
-      Exporter 0
-      ExtUtils::MakeMaker 6.30
-      strict 0
-      utf8 0
-      warnings 0
   Devel-GlobalDestruction-0.14
     pathname: H/HA/HAARG/Devel-GlobalDestruction-0.14.tar.gz
     provides:
@@ -199,24 +101,6 @@ DISTRIBUTIONS
       Test::Differences 0.60
       Test::More 0.84
       XSLoader 0
-  Exporter-Lite-0.08
-    pathname: N/NE/NEILB/Exporter-Lite-0.08.tar.gz
-    provides:
-      Exporter::Lite 0.08
-    requirements:
-      Carp 0
-      ExtUtils::MakeMaker 6.3
-      perl 5.006
-      strict 0
-      warnings 0
-  Exporter-Tiny-0.044
-    pathname: T/TO/TOBYINK/Exporter-Tiny-0.044.tar.gz
-    provides:
-      Exporter::Shiny 0.044
-      Exporter::Tiny 0.044
-    requirements:
-      ExtUtils::MakeMaker 6.17
-      perl 5.006001
   File-Which-1.21
     pathname: P/PL/PLICEASE/File-Which-1.21.tar.gz
     provides:
@@ -230,48 +114,6 @@ DISTRIBUTIONS
       Filesys::Notify::Simple 0.12
     requirements:
       ExtUtils::MakeMaker 6.30
-  GD-2.56
-    pathname: L/LD/LDS/GD-2.56.tar.gz
-    provides:
-      GD 2.56
-      GD::Group 1
-      GD::Polygon undef
-      GD::Polyline 0.2
-      GD::Simple undef
-    requirements:
-      ExtUtils::CBuilder 0
-      Math::Trig 0
-      Module::Build 0.42
-  GDGraph-1.54
-    pathname: R/RU/RUZ/GDGraph-1.54.tar.gz
-    provides:
-      GD::Graph 1.54
-      GD::Graph::Data 1.22
-      GD::Graph::Error 1.8
-      GD::Graph::area 1.17
-      GD::Graph::axestype 1.45
-      GD::Graph::bars 1.26
-      GD::Graph::colour 1.10
-      GD::Graph::hbars 1.3
-      GD::Graph::lines 1.15
-      GD::Graph::linespoints 1.8
-      GD::Graph::mixed 1.13
-      GD::Graph::pie 1.21
-      GD::Graph::points 1.13
-      GD::Graph::utils 1.7
-    requirements:
-      ExtUtils::MakeMaker 6.76
-      GD 1.18
-      GD::Text 0.80
-  GDTextUtil-0.86
-    pathname: M/MV/MVERB/GDTextUtil-0.86.tar.gz
-    provides:
-      GD::Text 0.86
-      GD::Text::Align 1.18
-      GD::Text::Wrap 1.20
-    requirements:
-      ExtUtils::MakeMaker 0
-      GD 1
   JSON-MaybeXS-1.003009
     pathname: E/ET/ETHER/JSON-MaybeXS-1.003009.tar.gz
     provides:
@@ -286,42 +128,28 @@ DISTRIBUTIONS
       JSON::PP 2.27300
       Scalar::Util 0
       perl 5.006
-  List-MoreUtils-0.418
-    pathname: R/RE/REHSACK/List-MoreUtils-0.418.tar.gz
+  Module-Build-0.4222
+    pathname: L/LE/LEONT/Module-Build-0.4222.tar.gz
     provides:
-      List::MoreUtils 0.418
-      List::MoreUtils::PP 0.418
-    requirements:
-      Exporter::Tiny 0.038
-      ExtUtils::MakeMaker 0
-  Math-Random-0.72
-    pathname: G/GR/GROMMEL/Math-Random-0.72.tar.gz
-    provides:
-      Math::Random 0.72
-    requirements:
-      ExtUtils::MakeMaker 0
-  Module-Build-0.4220
-    pathname: L/LE/LEONT/Module-Build-0.4220.tar.gz
-    provides:
-      Module::Build 0.4220
-      Module::Build::Base 0.4220
-      Module::Build::Compat 0.4220
-      Module::Build::Config 0.4220
-      Module::Build::Cookbook 0.4220
-      Module::Build::Dumper 0.4220
-      Module::Build::Notes 0.4220
-      Module::Build::PPMMaker 0.4220
-      Module::Build::Platform::Default 0.4220
-      Module::Build::Platform::MacOS 0.4220
-      Module::Build::Platform::Unix 0.4220
-      Module::Build::Platform::VMS 0.4220
-      Module::Build::Platform::VOS 0.4220
-      Module::Build::Platform::Windows 0.4220
-      Module::Build::Platform::aix 0.4220
-      Module::Build::Platform::cygwin 0.4220
-      Module::Build::Platform::darwin 0.4220
-      Module::Build::Platform::os2 0.4220
-      Module::Build::PodParser 0.4220
+      Module::Build 0.4222
+      Module::Build::Base 0.4222
+      Module::Build::Compat 0.4222
+      Module::Build::Config 0.4222
+      Module::Build::Cookbook 0.4222
+      Module::Build::Dumper 0.4222
+      Module::Build::Notes 0.4222
+      Module::Build::PPMMaker 0.4222
+      Module::Build::Platform::Default 0.4222
+      Module::Build::Platform::MacOS 0.4222
+      Module::Build::Platform::Unix 0.4222
+      Module::Build::Platform::VMS 0.4222
+      Module::Build::Platform::VOS 0.4222
+      Module::Build::Platform::Windows 0.4222
+      Module::Build::Platform::aix 0.4222
+      Module::Build::Platform::cygwin 0.4222
+      Module::Build::Platform::darwin 0.4222
+      Module::Build::Platform::os2 0.4222
+      Module::Build::PodParser 0.4222
     requirements:
       CPAN::Meta 2.142060
       CPAN::Meta::YAML 0.003
@@ -360,20 +188,20 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  Moo-2.003001
-    pathname: H/HA/HAARG/Moo-2.003001.tar.gz
+  Moo-2.003002
+    pathname: H/HA/HAARG/Moo-2.003002.tar.gz
     provides:
       Method::Generate::Accessor undef
       Method::Generate::BuildAll undef
       Method::Generate::Constructor undef
       Method::Generate::DemolishAll undef
-      Moo 2.003001
+      Moo 2.003002
       Moo::HandleMoose undef
       Moo::HandleMoose::FakeConstructor undef
       Moo::HandleMoose::FakeMetaClass undef
       Moo::HandleMoose::_TypeMap undef
       Moo::Object undef
-      Moo::Role 2.003001
+      Moo::Role 2.003002
       Moo::_Utils undef
       Moo::_mro undef
       Moo::_strictures undef
@@ -398,12 +226,6 @@ DISTRIBUTIONS
     requirements:
       Exporter 5.57
       perl 5.006
-  Struct-Compare-1.0.1
-    pathname: Z/ZE/ZENSPIDER/Struct-Compare-1.0.1.tar.gz
-    provides:
-      Struct::Compare 1.000001
-    requirements:
-      ExtUtils::MakeMaker 0
   Sub-Exporter-Progressive-0.001013
     pathname: F/FR/FREW/Sub-Exporter-Progressive-0.001013.tar.gz
     provides:
@@ -419,17 +241,6 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Scalar::Util 0
       perl 5.006
-  Sub-Uplevel-0.2600
-    pathname: D/DA/DAGOLDEN/Sub-Uplevel-0.2600.tar.gz
-    provides:
-      Sub::Uplevel 0.2600
-    requirements:
-      Carp 0
-      ExtUtils::MakeMaker 6.17
-      constant 0
-      perl 5.006
-      strict 0
-      warnings 0
   Test-Differences-0.64
     pathname: D/DC/DCANTRELL/Test-Differences-0.64.tar.gz
     provides:
@@ -439,22 +250,6 @@ DISTRIBUTIONS
       Data::Dumper 2.126
       Test::More 0.88
       Text::Diff 0.35
-  Test-Exception-0.43
-    pathname: E/EX/EXODIST/Test-Exception-0.43.tar.gz
-    provides:
-      Test::Exception 0.43
-    requirements:
-      Carp 0
-      Exporter 0
-      ExtUtils::MakeMaker 0
-      Sub::Uplevel 0.18
-      Test::Builder 0.7
-      Test::Builder::Tester 1.07
-      Test::Harness 2.03
-      base 0
-      perl 5.006001
-      strict 0
-      warnings 0
   Text-Diff-1.44
     pathname: N/NE/NEILB/Text-Diff-1.44.tar.gz
     provides:
@@ -467,21 +262,3 @@ DISTRIBUTIONS
       Exporter 0
       ExtUtils::MakeMaker 0
       perl 5.006
-  Tie-Array-Packed-0.13
-    pathname: S/SA/SALVA/Tie-Array-Packed-0.13.tar.gz
-    provides:
-      Tie::Array::Packed 0.13
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0
-  UNIVERSAL-require-0.18
-    pathname: N/NE/NEILB/UNIVERSAL-require-0.18.tar.gz
-    provides:
-      UNIVERSAL::require 0.18
-    requirements:
-      Carp 0
-      ExtUtils::MakeMaker 0
-      Test::More 0.47
-      perl 5.006
-      strict 0
-      warnings 0
