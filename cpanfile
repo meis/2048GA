@@ -6,6 +6,7 @@ requires 'List::Util';
 requires 'Module::Load';
 requires 'Moo';
 requires 'Moo::Role';
+requires 'Parallel::ForkManager';
 
 on 'develop' => sub {
     requires 'App::Prove';
