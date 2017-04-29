@@ -5,8 +5,6 @@ use Moo;
 use Player;
 use Parallel::ForkManager;
 
-use Data::Dumper;
-
 has chromosome_class => (is => 'ro', requrired => 1);
 has play             => (is => 'ro', default => 1);
 has cache            => (is => 'ro', default => sub { {} });
@@ -14,6 +12,7 @@ has cache            => (is => 'ro', default => sub { {} });
 sub run {
     my ($self, $ga) = @_;
 
+    unless ($AI::Genetic::OpSelection::__topN_redefined)
     {
         no warnings 'redefine';
         use AI::Genetic::OpSelection;
@@ -24,7 +23,9 @@ sub run {
           my $newPop = $_[0];
           $self->_run($ga, map { [$_->genes] } @$newPop);
           $old_top_n->(@_);
-        }
+        };
+
+        $AI::Genetic::OpSelection::__topN_redefined = 1;
     }
 
     return _run(@_);
