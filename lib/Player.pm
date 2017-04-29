@@ -66,8 +66,6 @@ sub evaluate {
         my @distances =
             sort
             map { abs($value - $_) }
-            # Skip empty tiles
-            grep { $_ }
             map { $tiles->[$_] }
             @$neighbours;
 
@@ -76,15 +74,8 @@ sub evaluate {
         $calcs->{tile_empty_neighbours}[$tile] = $weights->{tile_empty_neighbours}
             * grep { $tiles->[$_] == 0 } @$neighbours;
 
-        if ($value == 0 || @distances == 0) {
-            $calcs->{tile_min_distance}[$tile] = 0;
-            $calcs->{tile_max_distance}[$tile] = 0;
-        }
-        else {
-            $calcs->{tile_min_distance}[$tile] = $distances[0] * $weights->{tile_min_distance};
-            $calcs->{tile_max_distance}[$tile] = $distances[-1] * $weights->{tile_max_distance};
-        }
-
+        $calcs->{tile_min_distance}[$tile] = $distances[0] * $weights->{tile_min_distance};
+        $calcs->{tile_max_distance}[$tile] = $distances[-1] * $weights->{tile_max_distance};
         $calcs->{tile_total}[$tile] =
             $calcs->{tile_value}[$tile] +
             $calcs->{tile_neighbours}[$tile] +

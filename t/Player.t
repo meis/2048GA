@@ -46,7 +46,7 @@ subtest 'evaluate board' => sub {
         })
     );
 
-    is($evaluation, 824.4 + 800 + 14 );
+    is($evaluation, 905.6 + 800 + 14 );
 
     subtest 'score' => sub {
         is($calcs->{score}, 800);
@@ -85,42 +85,42 @@ subtest 'evaluate board' => sub {
     /);
 
     test_calc($calcs, 'tile_max_distance', qw/
-         0  6  0  0
-         0  6  0  2
-         0  2  0  2
+         8  8  8  2
+         2  6  2  2
+         4  4  4  4
          2  2  2  2
     /);
 
     test_calc($calcs, 'tile_total', qw/
-         6 54 10  6
-        10 24 12 18
-         8 22 10 18
+        14 56 18  8
+        12 24 14 18
+        12 24 14 20
         14 16 16 14
     /);
 
     subtest 'tiles_by_value' => sub {
         is_deeply($calcs->{tiles_by_value},
-            [6, 6, 8, 10, 10, 10, 12, 14, 14, 16, 16, 18, 18, 22, 24, 54]);
+            [8, 12, 12, 14, 14, 14, 14, 14, 16, 16, 18, 18, 20, 24, 24, 56]);
     };
 
     subtest 'tile_evatuations' => sub {
         my $expected_evaluation = [
-             6 * 1.2,
-             6 * 1.4,
-             8 * 1.6,
-            10 * 1.8,
-            10 * 2,
-            10 * 2.2,
-            12 * 2.4,
+             8 * 1.2,
+            12 * 1.4,
+            12 * 1.6,
+            14 * 1.8,
+            14 * 2,
+            14 * 2.2,
+            14 * 2.4,
             14 * 2.6,
-            14 * 2.8,
+            16 * 2.8,
             16 * 3,
-            16 * 3.2,
+            18 * 3.2,
             18 * 3.4,
-            18 * 3.6,
-            22 * 3.8,
+            20 * 3.6,
+            24 * 3.8,
             24 * 4,
-            54 * 4.2,
+            56 * 4.2,
         ];
 
         is_deeply($calcs->{tile_evaluations}, $expected_evaluation);
