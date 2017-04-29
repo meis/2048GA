@@ -10,7 +10,28 @@ has play             => (is => 'ro', default => 1);
 has cache            => (is => 'ro', default => sub { {} });
 
 sub run {
-    my ($self, $ga) = @_;
+    my ($self, $ga, $genes) = @_;
+
+    $self->_patch_op_selection();
+
+    # Ensure all individuals of current generation are already in the cache. This
+    # allow to fill the cache only once and run all fitness functions in parallel.
+    $self->_fill_cache($ga->people);
+
+    my $key = $self->chromosome_class->new({ genes => $genes })->key;
+
+    return $self->cache->{$key};
+}
+
+#
+# The fitness function is called on individuals on AI::Genetic::OpSelction::topN in
+# a map to sort individuals for fitness value.
+# Here, we are wrapping this function to pre-cache all the individuals to be sorted
+# before the actual fitness function is called. Then, all calls inside topN will only
+# be cache accesses.
+#
+sub _patch_op_selection {
+    my $self = shift;
 
     unless ($AI::Genetic::OpSelection::__topN_redefined)
     {
@@ -20,51 +41,35 @@ sub run {
         my $old_top_n = \&AI::Genetic::OpSelection::topN;
 
         *AI::Genetic::OpSelection::topN = sub {
-          my $newPop = $_[0];
-          $self->_run($ga, map { [$_->genes] } @$newPop);
+          $self->_fill_cache($_[0]);
           $old_top_n->(@_);
         };
 
         $AI::Genetic::OpSelection::__topN_redefined = 1;
     }
-
-    return _run(@_);
 }
 
-sub _run {
-    my $self = shift,
-    my $ga = shift;
-        #my @chromosomes = scalar @_ eq 1 ? [shift] : @_;
-    my @chromosomes = @_;
-
-    my $people = $ga->people;
+sub _fill_cache {
+    my ($self, $individuals) = @_;
 
     my %not_in_cache;
 
-    for my $ga_chromosome (@$people, @chromosomes) {
-        my $genes = ref $ga_chromosome eq 'ARRAY' ? $ga_chromosome : [$ga_chromosome->genes] ;
-        my $chromosome = $self->chromosome_class->new({ genes => $genes });
+    for my $individual (@$individuals) {
+        my $chromosome = $self->chromosome_class->new({
+            genes => [$individual->genes]
+        });
 
         $not_in_cache{$chromosome->key} = $chromosome
           unless $self->cache->{$chromosome->key};
     }
 
-    $self->_run_in_parallel(%not_in_cache);
-
-
-    #say Dumper($self->cache) if keys %not_in_cache;
-
-    my $current_key = $self->chromosome_class->new({ genes => $chromosomes[0] })->key;
-
-    return $self->cache->{$current_key};
+    $self->_fill_in_parallel(%not_in_cache);
 }
 
-sub _run_in_parallel {
+sub _fill_in_parallel {
     my ($self, %chromosomes) = @_;
 
-    say(scalar keys(%chromosomes) . ' chromosomes not in cache') if keys %chromosomes;
-
-    my $pm = Parallel::ForkManager->new(30);
+    my $pm = Parallel::ForkManager->new(scalar keys %chromosomes);
 
     $pm->run_on_finish (
         sub {
