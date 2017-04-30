@@ -25,6 +25,8 @@ my ($opt, $usage) = describe_options(
   [ 'chromosome_class=s', "Chromosome class to use", { default => '40Bits' } ],
   [ 'fitness_class=s',    "Fitness class to use",    { default => 'Base' } ],
   [],
+  [ 'file=s', "Save output to file" ],
+  [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
 
@@ -34,6 +36,10 @@ if ($opt->help) {
 else {
     say "Running experiment with params:";
     say Dumper({%$opt});
+
+    if ($opt->file) {
+        open STDOUT, '>', $opt->file;
+    }
 
     Experiment->new({%$opt})->run();
 }
