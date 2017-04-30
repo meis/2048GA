@@ -12,10 +12,11 @@ has cache            => (is => 'ro', default => sub { {} });
 sub run {
     my ($self, $ga, $genes) = @_;
 
+    # Ensure all individuals of current generation are already in the cache.
+    # This allows to fill the cache only once and run all fitness functions
+    # in parallel.
     $self->_patch_op_selection();
 
-    # Ensure all individuals of current generation are already in the cache. This
-    # allow to fill the cache only once and run all fitness functions in parallel.
     $self->_fill_cache($ga->people);
 
     my $key = $self->chromosome_class->new({ genes => $genes })->key;
@@ -24,17 +25,16 @@ sub run {
 }
 
 #
-# The fitness function is called on individuals on AI::Genetic::OpSelction::topN in
-# a map to sort individuals for fitness value.
-# Here, we are wrapping this function to pre-cache all the individuals to be sorted
-# before the actual fitness function is called. Then, all calls inside topN will only
-# be cache accesses.
+# The fitness function is called on individuals on AI::Genetic::OpSelction
+# topN in a map to sort individuals for fitness value.
+# Here, we are wrapping this function to pre-cache all the individuals to be
+# sorted before the actual fitness function is called. Then, all calls inside
+# topN will only be cache accesses.
 #
 sub _patch_op_selection {
     my $self = shift;
 
-    unless ($AI::Genetic::OpSelection::__topN_redefined)
-    {
+    unless ($AI::Genetic::OpSelection::__topN_redefined) {
         no warnings 'redefine';
         use AI::Genetic::OpSelection;
 
@@ -73,7 +73,7 @@ sub _fill_in_parallel {
 
     $pm->run_on_finish (
         sub {
-            my ($pid, $exit_code, $ident, $exit_signal, $core_dump, $data) = @_;
+            my ($pid, $code, $ident, $signal, $dump, $data) = @_;
 
             if (defined($data)) {
               $self->cache->{${$data}->[0]} += ${$data}->[1];
