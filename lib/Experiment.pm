@@ -8,7 +8,7 @@ use AI::Genetic;
 
 has generations      => (is => 'ro', default => 100);
 has population       => (is => 'ro', default => 50);
-has play             => (is => 'ro', default => 10);
+has play             => (is => 'ro', default => 20);
 has mutation         => (is => 'ro', default => 0.05);
 has crossover        => (is => 'ro', default => 0.9);
 has strategy         => (is => 'ro', default => 'rouletteTwoPoint');
@@ -17,6 +17,9 @@ has fitness_class    => (is => 'ro', default => 'Fitness::Base');
 has fitness_function => (is => 'lazy');
 has ga               => (is => 'lazy');
 has weights          => (is => 'lazy');
+
+around chromosome_class => sub { my $o = shift; 'Chromosome::' . $o->(shift, @_) };
+around fitness_class    => sub { my $o = shift; 'Fitness::' . $o->(shift, @_) };
 
 sub run {
     my $self = shift;

@@ -22,8 +22,8 @@ my ($opt, $usage) = describe_options(
   [ 'mutation=f',  "Mutation rate",      { default => 0.05 } ],
   [ 'strategy=s',  "Evolution Strategy", { default => 'rouletteTwoPoint' } ],
   [],
-  [ 'chromosome_class=s', "Chromosome class to use", { default => 'Chromosome::40Bits' } ],
-  [ 'fitness_class=s',    "Fitness class to use",    { default => 'Fitness::Base' } ],
+  [ 'chromosome_class=s', "Chromosome class to use", { default => '40Bits' } ],
+  [ 'fitness_class=s',    "Fitness class to use",    { default => 'Base' } ],
   [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
