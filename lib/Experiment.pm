@@ -16,6 +16,7 @@ has chromosome_class => (is => 'ro', default => 'Chromosome::40Bits');
 has fitness_class    => (is => 'ro', default => 'Fitness::Base');
 has fitness_function => (is => 'lazy');
 has ga               => (is => 'lazy');
+has weights          => (is => 'lazy');
 
 sub run {
     my $self = shift;
@@ -23,28 +24,40 @@ sub run {
     load($self->fitness_class);
     load($self->chromosome_class);
 
+    $self->_print_headers();
     $self->ga->init($self->chromosome_class->init);
-    $self->print_current_state();
+    $self->_print_generation();
 
     for my $n (0..$self->generations -1 ) {
         $self->ga->evolve($self->strategy, 1);
-        $self->print_current_state();
+        $self->_print_generation();
     }
-    my $best_chromosome = $self->chromosome_class->new({
-        genes => [$self->ga->people->[0]->genes],
-    });
-    say 'Weights of best chromosome:';
-    say Dumper($best_chromosome->to_string);
-
 }
 
-sub print_current_state {
+sub _print_headers {
     my $self = shift;
 
-    say "---------------------------------";
-    say "Generation " . $self->ga->generation();
-    say "Best score: " . $self->ga->getFittest->score;
-    say "---------------------------------";
+    say join(',', 'Generation', 'Fitness', @{$self->weights});
+}
+
+sub _print_generation {
+    my $self = shift;
+
+    for my $individual (@{$self->ga->people}) {
+        my $chromosome = $self->chromosome_class->new({
+            genes => [$individual->genes]
+        });
+
+        my @weight_values = map { $chromosome->weights->{$_} } @{$self->weights};
+
+        say join(',', $self->ga->generation, $individual->score, @weight_values);
+    }
+}
+
+sub _build_weights {
+    my $self = shift;
+
+    return [sort keys %{$self->chromosome_class->new()->weights}];
 }
 
 sub _build_ga {
