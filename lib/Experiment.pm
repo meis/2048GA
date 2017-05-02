@@ -11,7 +11,7 @@ has population       => (is => 'ro', default => 50);
 has play             => (is => 'ro', default => 20);
 has mutation         => (is => 'ro', default => 0.05);
 has crossover        => (is => 'ro', default => 0.9);
-has strategy         => (is => 'ro', default => 'rouletteTwoPoint');
+has strategy         => (is => 'ro', default => 'rouletteUniform');
 has chromosome_class => (is => 'ro', default => 'Chromosome::40Bits');
 has fitness_class    => (is => 'ro', default => 'Fitness::Base');
 has fitness_function => (is => 'lazy');
