@@ -3,11 +3,13 @@ use v5.10;
 use strict;
 use Moo;
 use Player;
+use Chromosome;
 use Parallel::ForkManager;
 
-has chromosome_class => (is => 'ro', requrired => 1);
-has play             => (is => 'ro', default => 1);
-has cache            => (is => 'ro', default => sub { {} });
+has play    => (is => 'ro', default => 1);
+has bits    => (is => 'ro', default => 8);
+has decimal => (is => 'ro', default => 0);
+has cache   => (is => 'ro', default => sub { {} });
 
 sub run {
     my ($self, $ga, $genes) = @_;
@@ -19,7 +21,7 @@ sub run {
 
     $self->_fill_cache($ga->people);
 
-    my $key = $self->chromosome_class->new({ genes => $genes })->key;
+    my $key = join('', @{$genes});
 
     return $self->cache->{$key};
 }
@@ -55,8 +57,10 @@ sub _fill_cache {
     my %not_in_cache;
 
     for my $individual (@$individuals) {
-        my $chromosome = $self->chromosome_class->new({
-            genes => [$individual->genes]
+        my $chromosome = Chromosome->new({
+            genes => [$individual->genes],
+            bits    => $self->bits,
+            decimal => $self->decimal,
         });
 
         $not_in_cache{$chromosome->key} = $chromosome

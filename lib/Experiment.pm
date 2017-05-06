@@ -12,23 +12,22 @@ has play             => (is => 'ro', default => 20);
 has mutation         => (is => 'ro', default => 0.05);
 has crossover        => (is => 'ro', default => 0.9);
 has strategy         => (is => 'ro', default => 'rouletteUniform');
-has chromosome_class => (is => 'ro', default => 'Chromosome::40Bits');
-has fitness_class    => (is => 'ro', default => 'Fitness::Base');
+has bits             => (is => 'ro', default => 8);
+has decimal          => (is => 'ro', default => 0);
+has fitness_class    => (is => 'ro', default => 'Base');
 has fitness_function => (is => 'lazy');
 has ga               => (is => 'lazy');
 has weights          => (is => 'lazy');
 
-around chromosome_class => sub { my $o = shift; 'Chromosome::' . $o->(shift, @_) };
 around fitness_class    => sub { my $o = shift; 'Fitness::' . $o->(shift, @_) };
 
 sub run {
     my $self = shift;
 
     load($self->fitness_class);
-    load($self->chromosome_class);
 
     $self->_print_headers();
-    $self->ga->init($self->chromosome_class->init);
+    $self->ga->init(8 * $self->bits);
     $self->_print_generation();
 
     for my $n (0..$self->generations -1 ) {
@@ -47,8 +46,10 @@ sub _print_generation {
     my $self = shift;
 
     for my $individual (@{$self->ga->people}) {
-        my $chromosome = $self->chromosome_class->new({
-            genes => [$individual->genes]
+        my $chromosome = Chromosome->new({
+            genes   => [$individual->genes],
+            bits    => $self->bits,
+            decimal => $self->decimal,
         });
 
         my @weight_values = map { $chromosome->weights->{$_} } @{$self->weights};
@@ -60,7 +61,7 @@ sub _print_generation {
 sub _build_weights {
     my $self = shift;
 
-    return [sort keys %{$self->chromosome_class->new()->weights}];
+    return [sort keys %{ Chromosome->new()->weights }];
 }
 
 sub _build_ga {
@@ -68,7 +69,7 @@ sub _build_ga {
 
     return AI::Genetic->new(
         -fitness         => $self->fitness_function,
-        -type            => $self->chromosome_class->type,
+        -type            => 'bitvector',
         -population      => $self->population,
         -crossover       => $self->crossover,
         -mutation        => $self->mutation,
@@ -80,7 +81,8 @@ sub _build_fitness_function {
 
     my $fitness = $self->fitness_class->new({
         play => $self->play,
-        chromosome_class => $self->chromosome_class,
+        bits => $self->bits,
+        decimal => $self->decimal,
     });
 
     return sub { $fitness->run($self->ga, @_) };

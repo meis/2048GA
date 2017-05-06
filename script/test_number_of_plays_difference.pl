@@ -2,7 +2,7 @@
 use v5.10;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Chromosome::40Bits;
+use Chromosome;
 use Player;
 use List::Util qw/max/;
 use Statistics::Basic qw(:all);
@@ -18,7 +18,7 @@ for my $test (1..$tests) {
     my $n = 0;
 
     for my $how_much (@times) {
-        my $chromosome = Chromosome::40Bits->new({ genes => $bits });
+        my $chromosome = Chromosome->new({ genes => $bits });
         my $player = Player->new({ chromosome => $chromosome });
         my $fitness = $player->play($how_much);
 

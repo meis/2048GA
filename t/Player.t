@@ -5,7 +5,7 @@ use Test::More;
 
 use Board;
 use Player;
-use Chromosome::40Bits;
+use Chromosome;
 
 sub test_calc {
     my ($calcs, $method, @expected) = @_;
@@ -20,7 +20,7 @@ sub test_calc {
 
 subtest 'evaluate board' => sub {
     my $player = Player->new({
-        chromosome => Chromosome::40Bits->new({
+        chromosome => Chromosome->new({
             weights => {
                 position              => 2,
                 score                 => 2,
