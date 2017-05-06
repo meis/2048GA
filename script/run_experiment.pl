@@ -16,7 +16,7 @@ my ($opt, $usage) = describe_options(
   'run_experiment.pl %o <some-arg>',
   [ 'generations=i', "Number of generations",       { default => 100 } ],
   [ 'population=i',  "Players in each generation",  { default => 100 } ],
-  [ 'games=i',       "Number of games for fitness", { default => 10 } ],
+  [ 'games=i',       "Number of games for fitness", { default => 20 } ],
   [],
   [ 'crossover=f', "Crossover rate",     { default => 0.95 } ],
   [ 'mutation=f',  "Mutation rate",      { default => 0.05 } ],
@@ -26,8 +26,6 @@ my ($opt, $usage) = describe_options(
   [ 'decimal=i', "Decimal part of the Chromosome",     { default => 0 } ],
   [],
   [ 'fitness_class=s',    "Fitness class to use",    { default => 'Base' } ],
-  [],
-  [ 'file=s', "Save output to file" ],
   [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
@@ -39,9 +37,14 @@ else {
     say "Running experiment with params:";
     say Dumper({%$opt});
 
-    if ($opt->file) {
-        open STDOUT, '>', $opt->file;
-    }
+    my $file_name = 'output/'
+                  . join('_', map { $_ . '=' . $opt->{$_} } sort keys %$opt)
+                  . '_' . time()
+                  . '.csv';
+
+    say "Output: $file_name";
+
+    open STDOUT, '>', $file_name;
 
     Experiment->new({%$opt})->run();
 }
