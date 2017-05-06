@@ -17,38 +17,11 @@ sub run {
     # Ensure all individuals of current generation are already in the cache.
     # This allows to fill the cache only once and run all fitness functions
     # in parallel.
-    $self->_patch_op_selection();
-
     $self->_fill_cache($ga->people);
 
     my $key = join('', @{$genes});
 
     return $self->cache->{$key};
-}
-
-#
-# The fitness function is called on individuals on AI::Genetic::OpSelction
-# topN in a map to sort individuals for fitness value.
-# Here, we are wrapping this function to pre-cache all the individuals to be
-# sorted before the actual fitness function is called. Then, all calls inside
-# topN will only be cache accesses.
-#
-sub _patch_op_selection {
-    my $self = shift;
-
-    unless ($AI::Genetic::OpSelection::__topN_redefined) {
-        no warnings 'redefine';
-        use AI::Genetic::OpSelection;
-
-        my $old_top_n = \&AI::Genetic::OpSelection::topN;
-
-        *AI::Genetic::OpSelection::topN = sub {
-          $self->_fill_cache($_[0]);
-          $old_top_n->(@_);
-        };
-
-        $AI::Genetic::OpSelection::__topN_redefined = 1;
-    }
 }
 
 sub _fill_cache {
