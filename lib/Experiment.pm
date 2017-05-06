@@ -85,6 +85,7 @@ sub _build_fitness_function {
         play => $self->play,
         bits => $self->bits,
         decimal => $self->decimal,
+        population => $self->population,
     });
 
     return sub { $fitness->run($self->ga, @_) };

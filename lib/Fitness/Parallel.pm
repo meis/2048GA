@@ -2,14 +2,18 @@ package Fitness::Parallel;
 use v5.10;
 use strict;
 use Moo;
+use Cache::LRU;
 use Player;
 use Chromosome;
 use Parallel::ForkManager;
 
-has play    => (is => 'ro', default => 1);
-has bits    => (is => 'ro', default => 8);
-has decimal => (is => 'ro', default => 0);
-has cache   => (is => 'ro', default => sub { {} });
+has play       => (is => 'ro', default => 1);
+has bits       => (is => 'ro', default => 8);
+has decimal    => (is => 'ro', default => 0);
+has population => (is => 'ro', default => 1000);
+
+has cache      => (is => 'lazy');
+sub _build_cache  { Cache::LRU->new(size => shift->population * 2) }
 
 sub run {
     my ($self, $ga, $genes) = @_;
@@ -21,7 +25,7 @@ sub run {
 
     my $key = join('', @{$genes});
 
-    return $self->cache->{$key};
+    return $self->cache->get($key);
 }
 
 sub _fill_cache {
@@ -31,14 +35,16 @@ sub _fill_cache {
 
     for my $individual (@$individuals) {
         my $chromosome = Chromosome->new({
-            genes => [$individual->genes],
+            genes   => [$individual->genes],
             bits    => $self->bits,
             decimal => $self->decimal,
         });
 
         $not_in_cache{$chromosome->key} = $chromosome
-          unless $self->cache->{$chromosome->key};
+          unless $self->cache->get($chromosome->key);
     }
+
+    return unless keys %not_in_cache;
 
     $self->_fill_in_parallel(%not_in_cache);
 }
@@ -53,7 +59,7 @@ sub _fill_in_parallel {
             my ($pid, $code, $ident, $signal, $dump, $data) = @_;
 
             if (defined($data)) {
-              $self->cache->{${$data}->[0]} += ${$data}->[1];
+              $self->cache->set(${$data}->[0], ${$data}->[1]);
             }
         }
     );
