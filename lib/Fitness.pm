@@ -1,4 +1,4 @@
-package Fitness::Parallel;
+package Fitness;
 use v5.10;
 use strict;
 use Moo;
@@ -13,6 +13,7 @@ has play       => (is => 'ro', default => 1);
 has bits       => (is => 'ro', default => 8);
 has decimal    => (is => 'ro', default => 0);
 has population => (is => 'ro', default => 1000);
+has forks      => (is => 'ro', default => 4);
 
 has cache      => (is => 'lazy');
 sub _build_cache  { Cache::LRU->new(size => shift->population * 2) }
@@ -54,7 +55,7 @@ sub _fill_cache {
 sub _fill_in_parallel {
     my ($self, %chromosomes) = @_;
 
-    my $pm = Parallel::ForkManager->new(scalar keys %chromosomes);
+    my $pm = Parallel::ForkManager->new($self->forks);
 
     $pm->run_on_finish (
         sub {
@@ -70,7 +71,13 @@ sub _fill_in_parallel {
         }
     );
 
-    my $iterator = natatime 10, keys %chromosomes;
+    my $number_of_keys = keys %chromosomes;
+    my $keys_per_fork = $number_of_keys / $self->forks;
+
+    $keys_per_fork = $number_of_keys if $keys_per_fork < 1;
+    $keys_per_fork += 1 unless $keys_per_fork % 10 == 0;
+
+    my $iterator = natatime $keys_per_fork, keys %chromosomes;
 
     # Start a new fork for every 10 items to add to cache
     while (my @keys = $iterator->()) {

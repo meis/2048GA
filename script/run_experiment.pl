@@ -24,6 +24,8 @@ my ($opt, $usage) = describe_options(
   [ 'bits=i',    "Number of bits to use in Chromosome",{ default => 8 } ],
   [ 'decimal=i', "Decimal part of the Chromosome",     { default => 0 } ],
   [],
+  [ 'forks=i', "Number of forks",{ default => 4 } ],
+  [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
 

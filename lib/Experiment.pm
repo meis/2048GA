@@ -5,6 +5,7 @@ use Data::Dumper;
 use Moo;
 use Module::Load;
 use AI::Genetic;
+use Fitness;
 
 has generations      => (is => 'ro', default => 100);
 has population       => (is => 'ro', default => 50);
@@ -14,15 +15,12 @@ has crossover        => (is => 'ro', default => 0.9);
 has strategy         => (is => 'ro', default => 'custom_strategy');
 has bits             => (is => 'ro', default => 8);
 has decimal          => (is => 'ro', default => 0);
-has fitness_class    => (is => 'ro', default => 'Fitness::Parallel');
-has fitness_function => (is => 'lazy');
+has forks            => (is => 'ro', default => 4);
 has ga               => (is => 'lazy');
 has weights          => (is => 'lazy');
 
 sub run {
     my $self = shift;
-
-    load($self->fitness_class);
 
     $self->_print_headers();
     $self->ga->init(8 * $self->bits);
@@ -66,7 +64,7 @@ sub _build_ga {
     my $self = shift;
 
     my $ga = AI::Genetic->new(
-        -fitness         => $self->fitness_function,
+        -fitness         => $self->get_fitness_function,
         -type            => 'bitvector',
         -population      => $self->population,
         -crossover       => $self->crossover,
@@ -78,14 +76,15 @@ sub _build_ga {
     return $ga;
 }
 
-sub _build_fitness_function {
+sub get_fitness_function {
     my $self = shift;
 
-    my $fitness = $self->fitness_class->new({
-        play => $self->play,
-        bits => $self->bits,
-        decimal => $self->decimal,
+    my $fitness = Fitness->new({
+        play       => $self->play,
+        bits       => $self->bits,
+        decimal    => $self->decimal,
         population => $self->population,
+        forks      => $self->forks,
     });
 
     return sub { $fitness->run($self->ga, @_) };
