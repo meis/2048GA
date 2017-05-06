@@ -3,6 +3,8 @@ use v5.10;
 use strict;
 use Moo;
 use Cache::LRU;
+use List::MoreUtils qw/natatime/;
+
 use Player;
 use Chromosome;
 use Parallel::ForkManager;
@@ -59,17 +61,28 @@ sub _fill_in_parallel {
             my ($pid, $code, $ident, $signal, $dump, $data) = @_;
 
             if (defined($data)) {
-              $self->cache->set(${$data}->[0], ${$data}->[1]);
+                my $fitnesses = $$data;
+
+                for my $key (keys %$fitnesses) {
+                    $self->cache->set($key, $fitnesses->{$key});
+                }
             }
         }
     );
 
-    for my $key (keys %chromosomes) {
+    my $iterator = natatime 10, keys %chromosomes;
+
+    # Start a new fork for every 10 items to add to cache
+    while (my @keys = $iterator->()) {
         $pm->start and next;
 
-        my $chromosome = $chromosomes{$key};
+        my $fitnesses = {
+            map {
+                $_ => $self->_player_fitness($chromosomes{$_})
+            } @keys
+        };
 
-        $pm->finish(0, \[$key, $self->_player_fitness($chromosome)]);
+        $pm->finish(0, \$fitnesses);
     }
 
     $pm->wait_all_children;

@@ -4,6 +4,7 @@ requires 'Cache::LRU';
 requires 'Data::Dumper';
 requires 'Getopt::Long::Descriptive';
 requires 'List::Util';
+requires 'List::MoreUtils';
 requires 'Module::Load';
 requires 'Moo';
 requires 'Moo::Role';

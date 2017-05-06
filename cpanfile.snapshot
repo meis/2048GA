@@ -121,6 +121,14 @@ DISTRIBUTIONS
       Test::Differences 0.60
       Test::More 0.84
       XSLoader 0
+  Exporter-Tiny-0.044
+    pathname: T/TO/TOBYINK/Exporter-Tiny-0.044.tar.gz
+    provides:
+      Exporter::Shiny 0.044
+      Exporter::Tiny 0.044
+    requirements:
+      ExtUtils::MakeMaker 6.17
+      perl 5.006001
   File-Which-1.21
     pathname: P/PL/PLICEASE/File-Which-1.21.tar.gz
     provides:
@@ -167,6 +175,14 @@ DISTRIBUTIONS
       JSON::PP 2.27300
       Scalar::Util 0
       perl 5.006
+  List-MoreUtils-0.419
+    pathname: R/RE/REHSACK/List-MoreUtils-0.419.tar.gz
+    provides:
+      List::MoreUtils 0.419
+      List::MoreUtils::PP 0.419
+    requirements:
+      Exporter::Tiny 0.038
+      ExtUtils::MakeMaker 0
   Module-Build-0.4222
     pathname: L/LE/LEONT/Module-Build-0.4222.tar.gz
     provides:
