@@ -14,12 +14,10 @@ has crossover        => (is => 'ro', default => 0.9);
 has strategy         => (is => 'ro', default => 'rouletteUniform');
 has bits             => (is => 'ro', default => 8);
 has decimal          => (is => 'ro', default => 0);
-has fitness_class    => (is => 'ro', default => 'Base');
+has fitness_class    => (is => 'ro', default => 'Fitness::Parallel');
 has fitness_function => (is => 'lazy');
 has ga               => (is => 'lazy');
 has weights          => (is => 'lazy');
-
-around fitness_class    => sub { my $o = shift; 'Fitness::' . $o->(shift, @_) };
 
 sub run {
     my $self = shift;

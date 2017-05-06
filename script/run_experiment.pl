@@ -20,12 +20,9 @@ my ($opt, $usage) = describe_options(
   [],
   [ 'crossover=f', "Crossover rate",     { default => 0.95 } ],
   [ 'mutation=f',  "Mutation rate",      { default => 0.05 } ],
-  [ 'strategy=s',  "Evolution Strategy", { default => 'rouletteUniform' } ],
   [],
   [ 'bits=i',    "Number of bits to use in Chromosome",{ default => 8 } ],
   [ 'decimal=i', "Decimal part of the Chromosome",     { default => 0 } ],
-  [],
-  [ 'fitness_class=s',    "Fitness class to use",    { default => 'Base' } ],
   [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
