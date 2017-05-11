@@ -9,6 +9,7 @@ requires 'Module::Load';
 requires 'Moo';
 requires 'Moo::Role';
 requires 'Parallel::ForkManager';
+requires 'Paws';
 requires 'Statistics::Basic';
 
 on 'develop' => sub {
