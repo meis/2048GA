@@ -36,8 +36,9 @@ else {
     say "Running experiment with params:";
     say Dumper({%$opt});
 
-    my $file_name = 'output/'
-                  . join('_', map { $_ . '=' . $opt->{$_} } sort keys %$opt)
+    my $file_name = 'output/experiment_'
+                  . join('_', map { $_ . '=' . $opt->{$_} }
+                      qw/generations population games crossover mutation bits decimal/)
                   . '_' . time()
                   . '.csv';
 
