@@ -29,12 +29,13 @@ my ($opt, $usage) = describe_options(
   [],
   [ 'forks=i', "Number of forks",{ default => 4 } ],
   [],
-  [ 'instance-type=s', "AWS instance type",                    { required => 1 } ],
-  [ 'iam-role=s',      "AWS role for the instance",            { default => '2048Bucket' } ],
-  [ 's3-bucket=s',     "S3 bucket to store the results",       { default => '2048bucket' } ],
-  [ 'region=s',        "AWS region",                           { default => 'eu-west-1' } ],
-  [ 'ami=s',           "AMI ID to build the instance",         { default => 'ami-a8d2d7ce' } ],
-  [ 'overbid=f',       "Ammount to bid current highest price", { default => 0.01 } ],
+  [ 'instance-type=s', "AWS instance type",                { required => 1 } ],
+  [ 'iam-role=s',      "AWS role for the instance",        { default => '2048Bucket' } ],
+  [ 's3-bucket=s',     "S3 bucket to store the results",   { default => '2048bucket' } ],
+  [ 'region=s',        "AWS region",                       { default => 'eu-west-1' } ],
+  [ 'ami=s',           "AMI ID to build the instance",     { default => 'ami-a8d2d7ce' } ],
+  [ 'bid-price=f',     "Ammount to bid",                   { default => 0 } ],
+  [ 'overbid=f',       "Overbid current highest price by", { implies => { bid_price => 0 } } ],
   [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
@@ -61,12 +62,15 @@ else {
 sub get_bid_price {
     my $ec2 = shift;
 
+    return $opt->bid_price if $opt->bid_price;
+
     my $bid_prices = $ec2->DescribeSpotPriceHistory(
         Filters => [
             { Name => 'instance-type', Values => [$opt->instance_type] },
             { Name => 'product-description', Values => ['Linux/UNIX'] },
         ],
     );
+
 
     my $max_price = max map { $_->SpotPrice } @{$bid_prices->SpotPriceHistory};
 
