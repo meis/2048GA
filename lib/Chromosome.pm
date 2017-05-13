@@ -24,68 +24,29 @@ sub _build_weights {
 
     my @genes = @{$self->genes};
 
-    my $weights = {
-        position              => 0,
-        score                 => 0,
-        empty_tiles           => 0,
-        tile_value            => 0,
-        tile_neighbours       => 0,
-        tile_empty_neighbours => 0,
-        tile_min_distance     => 0,
-        tile_max_distance     => 0,
-    };
+    my $votes = $self->bits / 3;
 
-    my $encoded_weights = $self->bits / 3;
+    my $encoded_weights = [];
 
-    for my $i (1..$encoded_weights) {
+    my $bit_index = 0;
+    for my $i (1..$votes) {
         my $ammount = $i % 2 == 0 ? 1 : -1;
-        my $weight = $self->_decode_weight(splice(@genes, 0, 3));
 
-        $weights->{$weight} += $ammount;
+        $encoded_weights->[$genes[$bit_index++]]
+                        ->[$genes[$bit_index++]]
+                        ->[$genes[$bit_index++]] += $ammount;
     }
 
-    return $weights;
-}
-
-sub _decode_weight {
-    my ($self, @bits) = @_;
-
-    if ($bits[0]) {
-        if ($bits[1]) {
-            if ($bits[2]) {
-                return 'tile_max_distance'
-            }
-            else {
-                return 'tile_min_distance'
-            }
-        }
-        else {
-            if ($bits[2]) {
-                return 'tile_empty_neighbours'
-            }
-            else {
-                return 'tile_neighbours'
-            }
-        }
-    }
-    else {
-        if ($bits[1]) {
-            if ($bits[2]) {
-                return 'tile_value'
-            }
-            else {
-                return 'empty_tiles'
-            }
-        }
-        else {
-            if ($bits[2]) {
-                return 'score'
-            }
-            else {
-                return 'position'
-            }
-        }
-    }
+    return  {
+        position              => $encoded_weights->[0][0][0] || 0,
+        score                 => $encoded_weights->[0][0][1] || 0,
+        empty_tiles           => $encoded_weights->[0][1][0] || 0,
+        tile_value            => $encoded_weights->[0][1][1] || 0,
+        tile_neighbours       => $encoded_weights->[1][0][0] || 0,
+        tile_empty_neighbours => $encoded_weights->[1][0][1] || 0,
+        tile_min_distance     => $encoded_weights->[1][1][0] || 0,
+        tile_max_distance     => $encoded_weights->[1][1][1] || 0,
+    };
 }
 
 1;

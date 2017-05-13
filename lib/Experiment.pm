@@ -107,7 +107,7 @@ sub custom_strategy {
 
     for my $i (1 .. $ga->size/2) {
         my @parents_genes = map { scalar $_->genes } $selection->();
-        my @childs_genes  = $crossover->($crossover_probability, @parents_genes);
+        my @childs_genes  = vectorUniform($crossover_probability, @parents_genes);
 
         # Check if parents did mate.
         if (ref $childs_genes[0]) {
@@ -131,6 +131,27 @@ sub custom_strategy {
 
     # Get only the half fittest individuals
     $ga->people(AI::Genetic::OpSelection::topN($ga->people, $ga->size));
+}
+
+sub vectorUniform {
+  my ($prob, $mom, $dad) = @_;
+
+  return 0 if rand > $prob;
+
+  my (@c1, @c2);
+  for my $i (0 .. $#{$dad} / 3) {
+    my $base = $i * 3;
+
+    if (rand > 0.5) {
+      push @c1, $mom->[$base], $mom->[$base + 1], $mom->[$base + 2];
+      push @c2, $dad->[$base], $dad->[$base + 1], $dad->[$base + 2];
+    } else {
+      push @c2, $mom->[$base], $mom->[$base + 1], $mom->[$base + 2];
+      push @c1, $dad->[$base], $dad->[$base + 1], $dad->[$base + 2];
+    }
+  }
+
+  return (\@c1, \@c2);
 }
 
 1;
