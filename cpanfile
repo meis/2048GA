@@ -1,10 +1,11 @@
 # -*- mode: perl -*-
-requires 'AI::Genetic';
 requires 'Cache::LRU';
 requires 'Data::Dumper';
+requires 'FindBin';
 requires 'Getopt::Long::Descriptive';
 requires 'List::Util';
 requires 'List::MoreUtils';
+requires 'MIME::Base64';
 requires 'Module::Load';
 requires 'Moo';
 requires 'Moo::Role';
@@ -15,7 +16,6 @@ requires 'Statistics::Basic';
 on 'develop' => sub {
     requires 'App::Prove';
     requires 'App::Prove::Watch';
-    requires 'Carp';
     requires 'Devel::NYTProf';
     requires 'Test::More';
 };

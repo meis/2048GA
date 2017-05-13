@@ -3,10 +3,10 @@ use v5.10;
 use strict;
 use Test::More;
 
-use Chromosome;
+use Chromosome::Independent;
 
 subtest 'default values' => sub {
-    my $chromosome = Chromosome->new({
+    my $chromosome = Chromosome::Independent->new({
         genes => [
             0,0,0,0,0,0,0,1,
             1,0,0,0,0,0,0,1,
@@ -21,7 +21,6 @@ subtest 'default values' => sub {
 
     is($chromosome->bits, 8);
     is($chromosome->decimal, 0);
-    is(length $chromosome->key, 8 * 8);
 
     my $weights = $chromosome->weights;
 
@@ -36,7 +35,7 @@ subtest 'default values' => sub {
 };
 
 subtest 'more bits' => sub {
-    my $chromosome = Chromosome->new({
+    my $chromosome = Chromosome::Independent->new({
         bits => 10,
         genes => [
             0,0,0,0,0,0,0,0,0,1,
@@ -52,7 +51,6 @@ subtest 'more bits' => sub {
 
     is($chromosome->bits, 10);
     is($chromosome->decimal, 0);
-    is(length $chromosome->key, 8 * 10);
 
     my $weights = $chromosome->weights;
 
@@ -67,7 +65,7 @@ subtest 'more bits' => sub {
 };
 
 subtest 'less bits' => sub {
-    my $chromosome = Chromosome->new({
+    my $chromosome = Chromosome::Independent->new({
         bits => 4,
         genes => [
             1,0,0,1,
@@ -83,7 +81,6 @@ subtest 'less bits' => sub {
 
     is($chromosome->bits, 4);
     is($chromosome->decimal, 0);
-    is(length $chromosome->key, 8 * 4);
 
     my $weights = $chromosome->weights;
 
@@ -98,7 +95,7 @@ subtest 'less bits' => sub {
 };
 
 subtest 'with 2 decimals' => sub {
-    my $chromosome = Chromosome->new({
+    my $chromosome = Chromosome::Independent->new({
         decimal => 2,
         genes => [
             0,0,0,0,0,0,0,1,
@@ -114,7 +111,6 @@ subtest 'with 2 decimals' => sub {
 
     is($chromosome->bits, 8);
     is($chromosome->decimal, 2);
-    is(length $chromosome->key, 8 * 8);
 
     my $weights = $chromosome->weights;
 
@@ -129,7 +125,7 @@ subtest 'with 2 decimals' => sub {
 };
 
 subtest 'with 1 decimal and 10 bits' => sub {
-    my $chromosome = Chromosome->new({
+    my $chromosome = Chromosome::Independent->new({
         decimal => 1,
         bits => 10,
         genes => [
@@ -146,7 +142,6 @@ subtest 'with 1 decimal and 10 bits' => sub {
 
     is($chromosome->bits, 10);
     is($chromosome->decimal, 1);
-    is(length $chromosome->key, 8 * 10);
 
     my $weights = $chromosome->weights;
 

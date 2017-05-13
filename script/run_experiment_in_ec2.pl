@@ -21,11 +21,10 @@ my ($opt, $usage) = describe_options(
   [ 'population=i',  "Players in each generation",  { default => 100 } ],
   [ 'games=i',       "Number of games for fitness", { default => 20 } ],
   [],
-  [ 'crossover=f', "Crossover rate",     { default => 0.95 } ],
-  [ 'mutation=f',  "Mutation rate",      { default => 0.05 } ],
+  [ 'crossover=f', "Crossover rate", { default => 0.95 } ],
+  [ 'mutation=f',  "Mutation rate",  { default => 0.05 } ],
   [],
-  [ 'bits=i',    "Number of bits to use in Chromosome",{ default => 8 } ],
-  [ 'decimal=i', "Decimal part of the Chromosome",     { default => 0 } ],
+  [ 'chromosome=s', "Chromosome class to use" ],
   [],
   [ 'forks=i', "Number of forks",{ default => 4 } ],
   [],
@@ -79,8 +78,8 @@ sub get_bid_price {
 
 sub build_startup_script {
     my $params = join(' ',
-        map { "--$_=$opt->{$_}" }
-        qw/generations population games crossover mutation bits decimal forks/
+        map { defined $opt->{$_} ? "--$_=" . $opt->$_ : '' }
+        qw/generations population games crossover mutation chromosome forks/
     );
 
     my $bucket = $opt->s3_bucket;

@@ -1,19 +1,5 @@
 # carton snapshot format: version 1.0
 DISTRIBUTIONS
-  AI-Genetic-0.05
-    pathname: A/AQ/AQUMSIEH/AI-Genetic-0.05.tar.gz
-    provides:
-      AI::Genetic 0.05
-      AI::Genetic::Defaults undef
-      AI::Genetic::IndBitVector undef
-      AI::Genetic::IndListVector undef
-      AI::Genetic::IndRangeVector undef
-      AI::Genetic::Individual 0.02
-      AI::Genetic::OpCrossover undef
-      AI::Genetic::OpMutation undef
-      AI::Genetic::OpSelection undef
-    requirements:
-      ExtUtils::MakeMaker 0
   ARGV-Struct-0.03
     pathname: J/JL/JLMARTIN/ARGV-Struct-0.03.tar.gz
     provides:
