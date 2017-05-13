@@ -1,5 +1,6 @@
 package Experiment;
 use v5.10;
+use autodie;
 use strict;
 use warnings;
 
@@ -18,10 +19,16 @@ has crossover   => (is => 'ro', default => 0.9);
 has forks       => (is => 'ro', default => 4);
 has chromosome  => (is => 'ro', default => 'Chromosome::Independent');
 
+has stdout      => (is => 'ro', default => 0);
+has _file_name  => (is => 'lazy');
+has _fh         => (is => 'lazy');
+
 has _fitness_cache => (is => 'lazy');
 
 sub run {
     my $self = shift;
+
+    say('Output: ' . $self->_file_name) if $self->_file_name;
 
     load($self->chromosome);
 
@@ -95,7 +102,7 @@ sub _generate_candidates {
 sub _print_headers {
     my $self = shift;
 
-    say join(',', 'Generation', 'Fitness', $self->chromosome->weight_keys);
+    $self->_print(join(',', 'Generation', 'Fitness', $self->chromosome->weight_keys));
 }
 
 sub _print_generation {
@@ -108,8 +115,45 @@ sub _print_generation {
     for my $chromosome (@sorted_chromosomes) {
         my @weight_values = map { $chromosome->weights->{$_} } $self->chromosome->weight_keys;
 
-        say join(',', $n, $chromosome->fitness, @weight_values);
+        $self->_print(join(',', $n, $chromosome->fitness, @weight_values));
     }
+}
+
+sub _print {
+    my ($self, $message) = @_;
+
+    if (my $fh = $self->_fh) {
+        say $fh $message;
+    }
+    else {
+        say $message;
+    }
+}
+
+sub _build__file_name {
+    my $self = shift;
+
+    return undef if $self->stdout;
+
+    my $attributes = join('_', map {
+        $_ . '=' . $self->$_
+    } qw/chromosome generations population games crossover mutation/);
+
+    return 'output/experiment_'
+           . $attributes
+           . '_' . time()
+           . '.csv';
+
+}
+
+sub _build__fh {
+    my $self = shift;
+
+    return undef unless $self->_file_name;
+
+    open(my $fh, ">", $self->_file_name);
+
+    return $fh;
 }
 
 sub _build__fitness_cache {

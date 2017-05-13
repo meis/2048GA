@@ -25,6 +25,8 @@ my ($opt, $usage) = describe_options(
   [],
   [ 'forks=i', "Number of forks",{ default => 4 } ],
   [],
+  [ 'stdout', "Write results to stdout insted of a file", { default => 0 } ],
+  [],
   [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
 );
 
@@ -32,19 +34,6 @@ if ($opt->help) {
     say($usage->text);
 }
 else {
-    say "Running experiment with params:";
-    say Dumper({%$opt});
-
-    my $file_name = 'output/experiment_'
-                  . join('_', map { $_ . '=' . $opt->{$_} }
-                      qw/generations population games crossover mutation/)
-                  . '_' . time()
-                  . '.csv';
-
-    say "Output: $file_name";
-
-    open STDOUT, '>', $file_name;
-
     Experiment->new({%$opt})->run();
 }
 
