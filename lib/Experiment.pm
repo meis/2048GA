@@ -17,7 +17,7 @@ has mutation    => (is => 'ro', default => 0.05);
 has crossover   => (is => 'ro', default => 0.9);
 
 has forks       => (is => 'ro', default => 4);
-has chromosome  => (is => 'ro', default => 'Chromosome::Independent');
+has chromosome  => (is => 'ro', default => 'Chromosome::Independent::8bit');
 
 has stdout      => (is => 'ro', default => 0);
 has _file_name  => (is => 'lazy');

@@ -2,12 +2,15 @@ package Chromosome::Independent;
 use v5.10;
 use strict;
 use warnings;
-use Moo;
+use Moo::Role;
 
 with 'Chromosome';
 
-has bits    => (is => 'ro', default => 8);
-has decimal => (is => 'ro', default => 0);
+requires '_build_bits';
+requires '_build_decimal';
+
+has bits    => (is => 'lazy');
+has decimal => (is => 'lazy');
 has genes   => (is => 'lazy');
 
 sub _build_genes  {
@@ -71,8 +74,8 @@ sub crossover {
     }
 
     return (
-        __PACKAGE__->new({ genes => \@son_genes }),
-        __PACKAGE__->new({ genes => \@dau_genes }),
+        $self->new({ genes => \@son_genes }),
+        $self->new({ genes => \@dau_genes }),
     );
 }
 
@@ -85,4 +88,3 @@ sub mutate {
 }
 
 1;
-
