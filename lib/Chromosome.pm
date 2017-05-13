@@ -23,37 +23,69 @@ sub _build_weights {
     my $self = shift;
 
     my @genes = @{$self->genes};
-    return {
-        position              => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        score                 => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        empty_tiles           => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        tile_value            => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        tile_neighbours       => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        tile_empty_neighbours => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        tile_min_distance     => $self->_gene2weight(splice(@genes, 0, $self->bits)),
-        tile_max_distance     => $self->_gene2weight(splice(@genes, 0, $self->bits)),
+
+    my $weights = {
+        position              => 0,
+        score                 => 0,
+        empty_tiles           => 0,
+        tile_value            => 0,
+        tile_neighbours       => 0,
+        tile_empty_neighbours => 0,
+        tile_min_distance     => 0,
+        tile_max_distance     => 0,
+    };
+
+    my $encoded_weights = $self->bits / 3;
+
+    for my $i (1..$encoded_weights) {
+        my $ammount = $i % 2 == 0 ? 1 : -1;
+        my $weight = $self->_decode_weight(splice(@genes, 0, 3));
+
+        $weights->{$weight} += $ammount;
     }
+
+    return $weights;
 }
 
-sub _gene2weight {
-    my $self = shift;
+sub _decode_weight {
+    my ($self, @bits) = @_;
 
-    my $sign   = shift @_ ? -1 : 1;
-    my @bits   = reverse @_;
-    my $multi  = 1;
-    my $weight = 0;
-
-    while (@bits) {
-        my $bit = shift @bits;
-        $weight += $multi if $bit;
-        $multi  *= 2;
+    if ($bits[0]) {
+        if ($bits[1]) {
+            if ($bits[2]) {
+                return 'tile_max_distance'
+            }
+            else {
+                return 'tile_min_distance'
+            }
+        }
+        else {
+            if ($bits[2]) {
+                return 'tile_empty_neighbours'
+            }
+            else {
+                return 'tile_neighbours'
+            }
+        }
     }
-
-    $weight *= $sign;
-
-    $weight /= 10 for 1..$self->decimal;
-
-    return $weight;
+    else {
+        if ($bits[1]) {
+            if ($bits[2]) {
+                return 'tile_value'
+            }
+            else {
+                return 'empty_tiles'
+            }
+        }
+        else {
+            if ($bits[2]) {
+                return 'score'
+            }
+            else {
+                return 'position'
+            }
+        }
+    }
 }
 
 1;

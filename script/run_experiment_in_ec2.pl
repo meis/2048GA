@@ -87,6 +87,7 @@ sub build_startup_script {
 
     return "#!/bin/bash
     git clone https://github.com/meis/2048GA/
+    git checkout correlated_weights
     cd 2048GA/
     ./script/install_dependencies.sh
     carton install
