@@ -11,7 +11,8 @@ requires '_build_decimal';
 
 has bits    => (is => 'lazy');
 has decimal => (is => 'lazy');
-has genes   => (is => 'lazy');
+
+sub gene_values { (0, 1) }
 
 sub _build_genes  {
     my $self = shift;
@@ -56,35 +57,6 @@ sub _gene2weight {
     $weight /= 10 for 1..$self->decimal;
 
     return $weight;
-}
-
-sub crossover {
-    my ($self, $mate) = @_;
-
-    my (@son_genes, @dau_genes);
-
-    for my $i (0 .. @{$self->genes} - 1) {
-        if (rand > 0.5) {
-            push @son_genes, $self->genes->[$i];
-            push @dau_genes, $mate->genes->[$i];
-        } else {
-            push @son_genes, $mate->genes->[$i];
-            push @dau_genes, $self->genes->[$i];
-        }
-    }
-
-    return (
-        $self->new({ genes => \@son_genes }),
-        $self->new({ genes => \@dau_genes }),
-    );
-}
-
-sub mutate {
-    my $self = shift;
-
-    my $index = int(rand(@{$self->genes}));
-
-    $self->genes->[$index] = !! $self->genes->[$index];
 }
 
 1;

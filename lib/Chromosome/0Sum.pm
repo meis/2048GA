@@ -8,8 +8,9 @@ with 'Chromosome';
 
 requires '_build_size';
 
-has genes => (is => 'lazy');
-has size  => (is => 'lazy');
+has size=> (is => 'lazy');
+
+sub gene_values { shift->weight_keys() }
 
 sub _build_genes {
     my $self = shift;
@@ -35,37 +36,6 @@ sub _build_weights {
     }
 
     return \%weights;
-}
-
-sub crossover {
-    my ($self, $mate) = @_;
-
-    my (@son_genes, @dau_genes);
-
-    for my $i (0 .. @{$self->genes} - 1) {
-        if (rand > 0.5) {
-            push @son_genes, $self->genes->[$i];
-            push @dau_genes, $mate->genes->[$i];
-        } else {
-            push @son_genes, $mate->genes->[$i];
-            push @dau_genes, $self->genes->[$i];
-        }
-    }
-
-    return (
-        $self->new({ genes => \@son_genes }),
-        $self->new({ genes => \@dau_genes }),
-    );
-}
-
-sub mutate {
-    my $self = shift;
-
-    my @possible_values = $self->weight_keys();
-    my $value = $possible_values[ rand @possible_values ];
-    my $index = int(rand(@{$self->genes}));
-
-    $self->genes->[$index] = $value;
 }
 
 1;
