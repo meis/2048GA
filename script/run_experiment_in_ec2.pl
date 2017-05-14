@@ -43,9 +43,10 @@ if ($opt->help) {
     say($usage->text);
 }
 else {
-    say "Launching instance " . $opt->instance_type;
-
     my $ec2 = Paws->service('EC2', region => $opt->region);
+    my $price = get_bid_price($ec2);
+
+    say "Launching instance " . $opt->instance_type . " at $price \$/hour";
 
     $ec2->RequestSpotInstances(
         LaunchSpecification => {
@@ -54,7 +55,7 @@ else {
             UserData => encode_base64(build_startup_script()),
             IamInstanceProfile => { Name => $opt->iam_role },
         },
-        SpotPrice => get_bid_price($ec2),
+        SpotPrice => $price,
     );
 }
 
