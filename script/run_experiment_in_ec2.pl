@@ -73,7 +73,7 @@ sub get_bid_price {
 
     my $max_price = max map { $_->SpotPrice } @{$bid_prices->SpotPriceHistory};
 
-    return ($max_price || 0) + $opt->overbid;
+    return ($max_price || 0) + ($opt->overbid || 0);
 }
 
 sub build_startup_script {
