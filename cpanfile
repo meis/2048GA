@@ -18,4 +18,5 @@ on 'develop' => sub {
     requires 'App::Prove::Watch';
     requires 'Devel::NYTProf';
     requires 'Test::More';
+    requires 'Text::CSV';
 };

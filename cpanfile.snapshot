@@ -154,13 +154,6 @@ DISTRIBUTIONS
       Mixin::Linewise::Writers 0
       strict 0
       warnings 0
-  Cpanel-JSON-XS-3.0231
-    pathname: R/RU/RURBAN/Cpanel-JSON-XS-3.0231.tar.gz
-    provides:
-      Cpanel::JSON::XS 3.0231
-    requirements:
-      ExtUtils::MakeMaker 0
-      Pod::Text 2.08
   Data-Compare-1.25
     pathname: D/DC/DCANTRELL/Data-Compare-1.25.tar.gz
     provides:
@@ -862,6 +855,12 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  ExtUtils-PkgConfig-1.16
+    pathname: X/XA/XAOC/ExtUtils-PkgConfig-1.16.tar.gz
+    provides:
+      ExtUtils::PkgConfig 1.16
+    requirements:
+      ExtUtils::MakeMaker 0
   File-Find-Rule-0.34
     pathname: R/RC/RCLAMP/File-Find-Rule-0.34.tar.gz
     provides:
@@ -950,6 +949,50 @@ DISTRIBUTIONS
       Filesys::Notify::Simple 0.12
     requirements:
       ExtUtils::MakeMaker 6.30
+  GD-2.66
+    pathname: R/RU/RURBAN/GD-2.66.tar.gz
+    provides:
+      GD 2.66
+      GD::Group 1
+      GD::Image 2.66
+      GD::Polygon undef
+      GD::Polyline 0.2
+      GD::Simple undef
+    requirements:
+      ExtUtils::Constant 0.22
+      ExtUtils::MakeMaker 0
+      ExtUtils::PkgConfig 0
+      Math::Trig 0
+  GDGraph-1.54
+    pathname: R/RU/RUZ/GDGraph-1.54.tar.gz
+    provides:
+      GD::Graph 1.54
+      GD::Graph::Data 1.22
+      GD::Graph::Error 1.8
+      GD::Graph::area 1.17
+      GD::Graph::axestype 1.45
+      GD::Graph::bars 1.26
+      GD::Graph::colour 1.10
+      GD::Graph::hbars 1.3
+      GD::Graph::lines 1.15
+      GD::Graph::linespoints 1.8
+      GD::Graph::mixed 1.13
+      GD::Graph::pie 1.21
+      GD::Graph::points 1.13
+      GD::Graph::utils 1.7
+    requirements:
+      ExtUtils::MakeMaker 6.76
+      GD 1.18
+      GD::Text 0.80
+  GDTextUtil-0.86
+    pathname: M/MV/MVERB/GDTextUtil-0.86.tar.gz
+    provides:
+      GD::Text 0.86
+      GD::Text::Align 1.18
+      GD::Text::Wrap 1.20
+    requirements:
+      ExtUtils::MakeMaker 0
+      GD 1
   Getopt-Long-Descriptive-0.100
     pathname: R/RJ/RJBS/Getopt-Long-Descriptive-0.100.tar.gz
     provides:
@@ -1111,7 +1154,6 @@ DISTRIBUTIONS
       JSON::MaybeXS 1.003009
     requirements:
       Carp 0
-      Cpanel::JSON::XS 2.3310
       ExtUtils::CBuilder 0.27
       ExtUtils::MakeMaker 0
       File::Spec 0
@@ -10155,6 +10197,17 @@ DISTRIBUTIONS
       Test::Builder::Module 0
       Test::More 0.47
       perl 5.006
+  Text-CSV-1.95
+    pathname: I/IS/ISHIGAKI/Text-CSV-1.95.tar.gz
+    provides:
+      Text::CSV 1.95
+      Text::CSV::ErrorDiag 1.95
+      Text::CSV_PP 1.95
+    requirements:
+      ExtUtils::MakeMaker 0
+      IO::Handle 0
+      Test::Harness 0
+      Test::More 0.71
   Text-Diff-1.44
     pathname: N/NE/NEILB/Text-Diff-1.44.tar.gz
     provides:
