@@ -4,7 +4,7 @@ use autodie;
 use strict;
 use warnings;
 
-use FitnessCache;
+use FitnessAssigner;
 use List::MoreUtils qw/natatime/;
 use Module::Load;
 use Moo;
@@ -44,7 +44,7 @@ has stdout      => (is => 'ro', default => 0);
 has _file_name  => (is => 'lazy');
 has _fh         => (is => 'lazy');
 
-has _fitness_cache => (is => 'lazy');
+has _fitness_assigner => (is => 'lazy');
 
 sub run {
     my $self = shift;
@@ -68,7 +68,7 @@ sub _initial_generation {
 
     my $generation = [ map { $self->chromosome->new } 1..$self->population ];
 
-    $self->_fitness_cache->assign_fitness($generation);
+    $self->_fitness_assigner->assign_fitness($generation);
 
     return $generation;
 }
@@ -115,7 +115,7 @@ sub _generate_candidates {
         push @candidates, $son, $dau;
     }
 
-    $self->_fitness_cache->assign_fitness(\@candidates);
+    $self->_fitness_assigner->assign_fitness(\@candidates);
 
     return \@candidates;
 }
@@ -177,10 +177,10 @@ sub _build__fh {
     return $fh;
 }
 
-sub _build__fitness_cache {
+sub _build__fitness_assigner {
     my $self = shift;
 
-    return FitnessCache->new({
+    return FitnessAssigner->new({
         games => $self->games,
         forks => $self->forks,
         slots => $self->population,

@@ -1,4 +1,4 @@
-package FitnessCache;
+package FitnessAssigner;
 use v5.10;
 use strict;
 use Moo;
@@ -15,9 +15,9 @@ FitnessCache - Assign fitness to chromosomes in parallel.
 
 =head1 SYNOPSIS
 
-    use FitnessCache;
+    use FitnessAssigner;
 
-    my $assigner = FitnessCache->new({
+    my $assigner = FitnessAssigner->new({
         forks => 12,
     });
 
