@@ -9,6 +9,19 @@ with 'Chromosome';
 requires '_build_bits';
 requires '_build_decimal';
 
+=head1 NAME
+
+Chromosome::Independent - Abstract Class for value independent Chromosomes.
+
+=head1 DESCRIPTION
+
+A value independent Chromosome uses n bits to encode each weight value.
+Optionally, then divides the value to obtain m decimals.
+
+Each implementation must decide the number of C<bits> and C<decimal>.
+
+=cut
+
 has bits    => (is => 'lazy');
 has decimal => (is => 'lazy');
 

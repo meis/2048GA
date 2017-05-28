@@ -4,6 +4,12 @@ use strict;
 use warnings;
 use Moo;
 
+=head1 NAME
+
+Chromosome::Dummy - Dummy Chromosome for testing purposes.
+
+=cut
+
 with 'Chromosome';
 
 sub gene_values { 0, 1 }

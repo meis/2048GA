@@ -4,11 +4,26 @@ use strict;
 use warnings;
 use Moo::Role;
 
+=head1 NAME
+
+Chromosome::0Sum - Abstract Class for 0 Sum Chromosomes.
+
+=head1 DESCRIPTION
+
+The sum of all weights of a 0 Sum Chromosome must be 0. To ensure that,
+each gene can have any weight name as value.
+
+Half of the genes add 1 to it's weight and the other half subtracts 1 from it.
+
+Each implementation must decide the C<size> of the Chromosome.
+
+=cut
+
 with 'Chromosome';
 
 requires '_build_size';
 
-has size=> (is => 'lazy');
+has size => (is => 'lazy');
 
 sub gene_values { shift->weight_keys() }
 

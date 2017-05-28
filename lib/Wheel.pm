@@ -6,6 +6,27 @@ use warnings;
 use List::Util qw/sum/;
 use Moo;
 
+=head1 NAME
+
+Wheel - Implementation of a selection wheel.
+
+=head1 SYNOPSIS
+
+    use Wheel;
+
+    my $wheel = $wheel->new({ chromosomes => $population });
+    my ($chromosome1, $chromosome2) = $wheel->select();
+
+=head1 DESCRIPTION
+
+The selection wheel returns two or more individuals from a list of chromosomes.
+Each chromosome has a probability to be selected proportional to its fitness.
+
+Be aware that the same chromosome can be selected more than once in the same
+C<select>.
+
+=cut
+
 has chromosomes    => (is => 'ro', required => 1);
 has _probabilities => (is => 'lazy');
 

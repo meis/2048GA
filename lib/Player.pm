@@ -5,6 +5,40 @@ use Moo;
 use List::Util qw/sum/;
 use Board;
 
+=head1 NAME
+
+Player - Play 2048 games using a specific chromosome.
+
+=head1 SYNOPSIS
+
+    use Player;
+    use Board;
+
+    my $board = Board->new;
+
+    my $player = Player->new({ chromosome => $my_chromosome });
+    my $mean_score_of_500_plays = $player->play(500);
+
+    my $board_evaluation = $player->evaluate($board);
+
+    my $next_board = $player->decide($board);
+
+=head1 DESCRIPTION
+
+This module uses a Chromosome's weights to play 2048.
+
+The C<evaluate> method assigns a numeric value to a Board using their
+Chromosome's weights.
+
+The C<decide> method gets a Board, evaluates its C<possible_moves> and returns
+the board with the higher evaluation.
+
+The C<play> method puts everything together and plays one or more complete
+games. Starts from a new Board and uses C<decide> to advance in the game until
+it ends. Returns the mean score of the played games.
+
+=cut
+
 has 'chromosome' => (is => 'ro');
 
 #  0  1  2  3
@@ -48,6 +82,17 @@ sub play {
     return $total_score / $times;
 }
 
+#
+# You might be wondering why this function is so long and cryptic. The main
+# reason is performance.
+#
+# When running an experiment most of the time is spent inside this function,
+# so we try to do as much as possible in the same loops and reuse all the
+# information possible.
+#
+# Also, function calls in Perl are relatively costly, so doing all the calculus
+# inside the same function saves us some CPU cycles.
+#
 sub evaluate {
     my ($self, $board) = @_;
 

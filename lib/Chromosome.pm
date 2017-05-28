@@ -5,6 +5,34 @@ use warnings;
 use Data::Dumper;
 use Moo::Role;
 
+=head1 NAME
+
+Chromosome - Abstract Class to implement Chromosomes.
+
+=head1 SYNOPSIS
+
+    # My::Chromosome extends Chromosome
+    use My::Chromosome;
+
+    my $chromosome = My::Chromosome->new({ genes => $genes })
+
+    my $weights = $chromosome->weights;
+
+    my ($brother, $sister) = $chromosome->crossover($other_chromosome);
+
+    $chromosome->mutate if $should_mutate;
+
+=head1 DESCRIPTION
+
+This is an Abstract Class to implement Chromosomes. It defines the interface
+used by Experiment, Player and FitnessCache.
+
+Each implementation defines how much genes it has, and their possible values
+(C<gene_values>). Also, each implementation must define how the chromosome's
+genes translate into weights (C<weights>).
+
+=cut
+
 requires 'gene_values';
 requires '_build_weights';
 requires '_build_genes';

@@ -10,6 +10,27 @@ use Module::Load;
 use Moo;
 use Wheel;
 
+=head1 NAME
+
+Experiment - Genetic algorithm to optimize Chromosome.
+
+=head1 SYNOPSIS
+
+    use Experiment;
+
+    my $experiment = Experiment->new({ generations => 42 });
+    $experiment->run;
+
+=head1 DESCRIPTION
+
+This module provides the main interface to run experiments. An experiment is an
+envolution of a finite number of C<generations>.
+
+The method C<run> saves the generation, fitnees and weights of every chromosome
+used in a file, or prints it if C<stdout> is truthy.
+
+=cut
+
 has generations => (is => 'ro', default => 100);
 has population  => (is => 'ro', default => 50);
 has games       => (is => 'ro', default => 20);

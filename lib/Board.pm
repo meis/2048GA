@@ -3,6 +3,40 @@ use v5.10;
 use strict;
 use warnings;
 
+=head1 NAME
+
+Board - Immutable Board to play 2048.
+
+=head1 SYNOPSIS
+
+    use Board;
+
+    my $board = Board->new;
+
+    my $possible_moves = $board->possible_moves;
+
+    while (! $board->finished) {
+        $board = $board->move('left');
+    }
+
+    print "Final score is: " . $board->score . "\n";
+
+=head1 DESCRIPTION
+
+This class represents a 2048 board and implements all the game logic. Any board
+has C<tiles> and C<score>.
+
+The C<tiles> are encoded in an unidimensional array. For performance, tile
+values are expressed as exponents. Thus, if the tile contains a 4 represents
+a 16, and a value of 5 represents a 32.
+
+The C<moves> method returns all the Boards that can be reached from this one.
+To get the move keys (left, right, up, down) you can use C<possible_moves>. If
+you C<move> to any of those directions, you will get a new Board (the one
+with that direction key in C<moves> with an extra random tile);
+
+=cut
+
 use constant ROTATION => {
     left  => [ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 ],
     right => [ 3,2,1,0,7,6,5,4,11,10,9,8,15,14,13,12 ],

@@ -4,6 +4,13 @@ use strict;
 use warnings;
 use Moo;
 
+=head1 NAME
+
+Chromosome::Independent::10bit - Value Independent Chromosome using 10 bits to
+encode each weight.
+
+=cut
+
 with 'Chromosome::Independent';
 
 sub _build_bits    { 10 }

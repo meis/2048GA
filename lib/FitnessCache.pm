@@ -9,6 +9,28 @@ use Player;
 use Chromosome;
 use Parallel::ForkManager;
 
+=head1 NAME
+
+FitnessCache - Assign fitness to chromosomes in parallel.
+
+=head1 SYNOPSIS
+
+    use FitnessCache;
+
+    my $assigner = FitnessCache->new({
+        forks => 12,
+    });
+
+    $assigner->assign_fitness($chromosomes);
+
+=head1 DESCRIPTION
+
+Assign multiple Chromosome's fitness in batch. Uses multiple forks to get
+the fitnesses in parallel. Also, it has a RLU cache to avoid asking for fitness
+to already seen chromosomes.
+
+=cut
+
 has games  => (is => 'ro', default => 1);
 has forks  => (is => 'ro', default => 4);
 has slots  => (is => 'ro', default => 10000);
