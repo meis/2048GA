@@ -6,9 +6,8 @@ use Moo;
 
 with 'Chromosome';
 
-sub crossover { return (shift, shift) }
-
-sub mutate {}
+sub gene_values { 0, 1 }
+sub _build_genes { [0, 0] }
 
 sub _build_weights {
     return {
